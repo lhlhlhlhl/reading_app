@@ -1,0 +1,41 @@
+.wrapper>div{
+    position: fixed;
+    /* 固定位置,定位 */
+    /* static表示取消定位 */
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    background: #d44439;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    /* 关键帧动画，复杂动画 
+    animation-name 动画脚本
+    animation-duration 持续时间
+    animation-iteration-count 重复次数
+    animation-timing-function 运动速率 ease-in先慢后快
+    */
+    animation:loading 1.4s infinite ease-in
+}
+.wrapper>div:nth-child(2){
+    background: #44d499;
+    animation-delay: -0.7s;
+    
+}
+@keyframes loading {
+    /* 1.4s你设计多少个动作？ */
+    0%,100%{
+        transform: scale(0) translateX(0px);
+    }
+    25%{
+        transform:scale(1) translateX(-25px);
+    }
+    50%{
+        transform:  translateX(0px);
+    }
+    75%{
+        transform: scale(1) translateX(25px);
+    }
+}
