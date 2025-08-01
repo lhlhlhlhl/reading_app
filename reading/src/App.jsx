@@ -34,7 +34,7 @@ function App() {
             <Route element={<MainLayout />}>
               <Route path="/" element={<Navigate to="/home" />} />
               <Route path="/home" element={<Home />} />
-              <Route path="/login" element={<Login />} />
+              
               <Route path="/stacks" element={
                   <ProtectRoute >
                     {/* 一个组件还包着一个组件 */}
@@ -57,6 +57,7 @@ function App() {
               <Route element={<BlankLayout />}>
                 <Route path="/search" element={<Search />} />
                 <Route path="/detail/:id" element={<Detail />} />
+                <Route path="/login" element={<Login />} />
               </Route>
             </Routes>
        </Suspense>
