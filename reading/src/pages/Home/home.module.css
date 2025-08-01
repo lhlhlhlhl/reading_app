@@ -1,0 +1,329 @@
+.home {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  padding: 38px 12px 0 12px;
+  background-color: #f8f9fa;
+  color: #333;
+  overflow-y: auto;
+}
+
+/* 全局样式变量 - 浅色系配色 */
+:root {
+  --primary-color: #f8f9fa;
+  --secondary-color: #e9ecef;
+  --accent-color: #1989fa;
+  --text-color: #333;
+  --light-text: #666;
+  --border-color: #e5e7eb;
+  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* 搜索栏样式 */
+.searchBar {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border-radius: 8px;
+  padding: 8px 16px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.searchIcon {
+  color: #999;
+  margin-right: 8px;
+}
+
+.searchText {
+  color: #999;
+  flex: 1;
+}
+
+/* 阅读统计卡片 */
+.readingStats {
+  background-color: white;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 24px;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.readingStats.expanded {
+  margin-bottom: 30px;
+}
+
+.statsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.readingStats:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.statsTitle {
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--text-color);
+}
+
+.statsContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.readingTime {
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--accent-color, #1989fa);
+}
+
+.timeText {
+  color: var(--light-text, #666);
+}
+
+/* 天数选择器 */
+.daySelector {
+  display: flex;
+  gap: 8px;
+  margin-top: 15px;
+}
+
+.daySelector button {
+  padding: 4px 10px;
+  border-radius: 16px;
+  font-size: 12px;
+  background-color: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  color: var(--light-text, #666);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.daySelector button.selectedDay {
+  background-color: var(--accent-color, #1989fa);
+  border-color: #93c5fd;
+  color: white;
+  font-weight: 500;
+}
+
+/* 统计图表 */
+.statsChart {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.chartTitle {
+  font-size: 14px;
+  color: var(--text-color, #333);
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.chartContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  height: 150px;
+  padding-bottom: 10px;
+}
+
+.chartBarWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 12%;
+}
+
+.chartBar {
+  background-color: var(--accent-color, #1989fa);
+  border-radius: 4px 4px 0 0;
+  width: 100%;
+  transition: height 0.3s ease;
+}
+
+.chartDay {
+  margin-top: 5px;
+  font-size: 12px;
+  color: var(--light-text, #666);
+}
+
+.chartValue {
+  margin-top: 2px;
+  font-size: 10px;
+  color: var(--text-color, #333);
+  font-weight: 500;
+}
+
+/* 书架样式 */
+.bookshelf {
+  margin-bottom: 24px;
+}
+
+.sectionTitle {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #333;
+}
+
+.importButton {
+  background: none;
+  border: none;
+  color: #1989fa;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.booksContainer {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding-bottom: 16px;
+}
+
+.bookItem {
+  width: 120px;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.bookCover {
+  width: 120px;
+  height: 160px;
+  border-radius: 8px;
+  object-fit: cover;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.bookName {
+  margin-top: 8px;
+  font-size: 14px;
+  color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.addBook {
+  width: 120px;
+  height: 160px;
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #999;
+  cursor: pointer;
+}
+
+.addIcon {
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+/* 推荐书籍样式 */
+.recommendedBooks {
+  margin-bottom: 24px;
+}
+
+.recommendedContainer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.recommendedBook {
+  display: flex;
+  flex-direction: column;
+}
+
+.recommendedCover {
+  width: 100%;
+  height: 160px;
+  border-radius: 8px;
+  object-fit: cover;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.recommendedName {
+  margin-top: 8px;
+  font-size: 14px;
+  color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.recommendedInfo {
+  font-size: 12px;
+  color: #999;
+  margin-top: 4px;
+}
+
+/* 长按菜单样式 */
+.longPressMenu {
+  position: absolute;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 8px 0;
+  z-index: 100;
+  width: 160px;
+}
+
+.menuItem {
+  padding: 8px 16px;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.menuItem:hover {
+  background-color: #f5f5f5;
+}
+
+.menuIcon {
+  margin-right: 8px;
+  color: #666;
+}
+
+.menuItem.delete {
+  color: #ff4d4f;
+}
+
+/* 换一批按钮 */
+.changeBatch {
+  margin-top: 16px;
+  width: 100%;
+  padding: 8px 0;
+  background-color: white;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  color: #1989fa;
+  font-size: 14px;
+  cursor: pointer;
+}

@@ -9,7 +9,7 @@ const useDetailStore = create((set) => ({
         bookDesc:'描述--------------------------啊啊啊',//描述
         images:
             {
-                alt: '图片',
+                alt: '封面',
                 url: 'https://dummyimage.com/300x200/79f291/fff&text=%E5%9B%BE%E7%89%87'
             },//封面
         credit:'8.5',//评分
@@ -19,8 +19,17 @@ const useDetailStore = create((set) => ({
         readNum:'1000',//在线阅读量
         stacksNum:'100',//加入书架量
         rank:'10',//排名
+        
     },
+    isStack:false,//是否加入书架
     loading: false,
+    setIsStack:()=>{
+        set((state)=>{
+               return{
+                isStack:!state.isStack
+            }
+        })
+    },
     setDetail: async()=>{
         set({loading:true})
         const res =await getDetail();
