@@ -1,5 +1,4 @@
 import { ArrowLeft } from '@react-vant/icons'
-import { ArrowLeft } from '@react-vant/icons'
 import {
     useState
 } from "react"

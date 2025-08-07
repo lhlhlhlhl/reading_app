@@ -1,6 +1,72 @@
- import Mock from 'mockjs';
+import Mock from 'mockjs';
 
- //每页10个，两列，一列5个 瀑布流 翻页
+// 定义书籍数据结构
+const BookModel = {
+  id: '',
+  bookName: '',
+  cover: '',
+  author: '',
+  publishTime: '',
+  description: '',
+  category: '', // 主分类
+  subCategory: '', // 子分类
+  isInBookshelf: false,
+  isRead: false,
+  isTop: false,
+  isFinished: false, // 是否完本
+  rating: 0,
+  readProgress: 0,
+  readCount: 0, // 阅读人数
+  rank: 0, // 排名
+  collectionCount: 0 // 收藏数量
+};
+
+// 定义主分类和子分类
+const CATEGORIES = {
+  'fiction': { name: '小说', subCategories: ['玄幻', '奇幻', '武侠', '仙侠', '都市', '历史', '军事', '科幻', '悬疑', '言情'] },
+  'non-fiction': { name: '非虚构', subCategories: ['传记', '历史', '哲学', '心理', '科学', '技术', '商业', '教育'] },
+  'comics': { name: '漫画', subCategories: ['热血', '恋爱', '悬疑', '科幻', '奇幻', '日常', '搞笑'] },
+  'kids': { name: '少儿', subCategories: ['童话', '绘本', '科普', '成长', '益智'] }
+};
+
+// 生成mock书籍数据
+const generateMockBooks = (count = 100) => {
+  const books = [];
+  const categoryKeys = Object.keys(CATEGORIES);
+
+  for (let i = 0; i < count; i++) {
+    // 随机选择主分类
+    const category = categoryKeys[Math.floor(Math.random() * categoryKeys.length)];
+    // 随机选择子分类
+    const subCategories = CATEGORIES[category].subCategories;
+    const subCategory = subCategories[Math.floor(Math.random() * subCategories.length)];
+
+    const book = Mock.mock({
+      id: Mock.Random.guid(),
+      bookName: Mock.Random.ctitle(5, 15),
+      cover: Mock.Random.image('300x400', Mock.Random.color(), '#fff', 'book'),
+      author: Mock.Random.cname(),
+      publishTime: Mock.Random.date('yyyy-MM-dd'),
+      description: Mock.Random.cparagraph(3, 5),
+      category: category,
+      subCategory: subCategory,
+      // isInBookshelf: Mock.Random.boolean(0.1), // 30%的概率在书架中
+      isInBookshelf: false, // 30%的概率在书架中
+      isRead: Mock.Random.boolean(0.2), // 20%的概率已读完
+      isTop: false,
+      isFinished: Mock.Random.boolean(0.7), // 70%的概率已完本
+      rating: Mock.Random.float(0, 10, 1, 1),
+      readProgress: Mock.Random.integer(0, 100),
+      readCount: Mock.Random.integer(100, 10000),
+      rank: Mock.Random.integer(1, 100),
+      collectionCount: Mock.Random.integer(50, 5000)
+    });
+    books.push(book);
+  }
+  return books;
+};
+
+//每页10个，两列，一列5个 瀑布流 翻页
  const getImages = (page,pageSize=10)=>{
    return Array.from({length:pageSize},(_,i)=>({
     id:`${page}-${i}`,
@@ -9,7 +75,67 @@
    }))
  }
 
-export default [{
+// 导出书籍数据API
+const mockBooks = generateMockBooks();
+
+export default [
+  {
+    url: '/api/books',
+    method: 'get',
+    timeout: 1000,
+    response: () => {
+      return {
+        code: 0,
+        data: mockBooks
+      };
+    }
+  },
+  {
+    url: '/api/books/bookshelf',
+    method: 'get',
+    timeout: 1000,
+    response: () => {
+      const bookshelfBooks = mockBooks.filter(book => book.isInBookshelf);
+      return {
+        code: 0,
+        data: bookshelfBooks
+      };
+    }
+  },
+  {
+    url: '/api/books/:id',
+    method: 'get',
+    timeout: 1000,
+    response: (req) => {
+      const id = req.params.id;
+      const book = mockBooks.find(book => book.id === id);
+      return {
+        code: 0,
+        data: book || null
+      };
+    }
+  },
+  {
+    url: '/api/books/update',
+    method: 'post',
+    timeout: 1000,
+    response: (req) => {
+      const { id, updates } = req.body;
+      const index = mockBooks.findIndex(book => book.id === id);
+      if (index !== -1) {
+        mockBooks[index] = { ...mockBooks[index], ...updates };
+        return {
+          code: 0,
+          data: mockBooks[index],
+          message: '更新成功'
+        };
+      }
+      return {
+        code: -1,
+        message: '未找到书籍'
+      };
+    }
+  },{
     url: '/api/search',
     method: 'get',
     timeout: 1000,

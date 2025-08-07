@@ -1,0 +1,317 @@
+.stacks {
+  padding: 38px 12px 60px 12px; /* 增加底部padding以避开Tabbar */
+  min-height: 100vh;
+  box-sizing: border-box; /* 确保padding计入总高度 */
+  display: flex;
+  flex-direction: column;
+}
+
+/* 顶部主分类导航 */
+.topCategoryNav {
+  display: flex;
+  overflow-x: auto;
+  padding: 10px 0;
+  margin-bottom: 16px;
+  -webkit-overflow-scrolling: touch;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.categoryButton {
+  padding: 8px 16px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 16px;
+  background-color: #f0f0f0;
+  white-space: nowrap;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.activeCategory {
+  background-color: #007aff;
+  color: white;
+}
+
+/* 内容容器 */
+.contentContainer {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* 左侧子分类导航 */
+.sideCategoryNav {
+  width: 120px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  overflow-y: auto;
+}
+
+.subCategoryButton {
+  width: 100%;
+  padding: 10px;
+  text-align: left;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 6px;
+  margin-bottom: 4px;
+}
+
+.activeSubCategory {
+  background-color: #e6f2ff;
+  color: #007aff;
+  font-weight: bold;
+}
+
+/* 书籍列表 */
+.booksContainer {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 16px;
+}
+
+.bookItem {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  position: relative;
+}
+
+.bookItem:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.bookCoverWrapper {
+  position: relative;
+  width: 100%;
+  height: 180px;
+}
+
+.bookCover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.readMarker {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-top: 24px solid #007aff;
+  border-left: 24px solid transparent;
+}
+
+.finishedMarker {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background-color: #34c759;
+  color: white;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.bookInfo {
+  padding: 10px;
+}
+
+.bookName {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 4px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  height: 36px;
+}
+
+.bookAuthor {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 6px;
+}
+
+.bookMeta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #666;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+}
+
+.rating::before {
+  content: '⭐';
+  margin-right: 4px;
+}
+
+.readCount {
+  display: flex;
+  align-items: center;
+}
+
+.readCount::before {
+  content: '👁️';
+  margin-right: 4px;
+}
+
+.editIcon {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s;
+  font-size: 14px;
+}
+
+.bookItem:hover .editIcon {
+  opacity: 1;
+}
+
+/* 瀑布流容器 */
+.waterfallContainer {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+/* 回到顶部按钮 */
+.scrollTopButton {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #007aff;
+  color: white;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  z-index: 1000;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.scrollTopButton:hover {
+  background-color: #0062cc;
+  transform: translateY(-3px);
+}
+
+.scrollTopButton:active {
+  transform: translateY(1px);
+}
+
+/* 加载指示器 */
+.loadingIndicator {
+  text-align: center;
+  padding: 20px;
+  color: #888;
+  font-size: 16px;
+}
+
+/* 动态编辑栏 */
+.editBar {
+  position: fixed;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 8px 0;
+  z-index: 1000;
+  min-width: 120px;
+}
+
+.editButton {
+  padding: 10px 16px;
+  text-align: center;
+  cursor: pointer;
+  font-size: 14px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.editButton:hover {
+  background-color: #f5f5f5;
+}
+/* 搜索栏样式 */
+.searchBar {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border-radius: 8px;
+  padding: 8px 16px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.searchIcon {
+  color: #999;
+  margin-right: 8px;
+}
+
+.searchText {
+  color: #999;
+  flex: 1;
+}
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .sideCategoryNav {
+    display: none;
+  }
+
+  .booksContainer {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+
+  .bookCoverWrapper {
+    height: 160px;
+  }
+}
+
+/* 在移动设备上显示子分类为下拉菜单 */
+@media (max-width: 768px) {
+  .mobileSubCategoryDropdown {
+    display: block;
+    margin-bottom: 16px;
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #f0f0f0;
+    background-color: white;
+  }
+}
+
+@media (min-width: 769px) {
+  .mobileSubCategoryDropdown {
+    display: none;
+  }
+}

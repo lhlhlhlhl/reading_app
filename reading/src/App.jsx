@@ -21,6 +21,7 @@ const Account = lazy(() => import('@/pages/Account'))//我的
 const Detail = lazy(() => import('@/pages/Detail'))//详情页
 const Search = lazy(() => import('@/pages/Search'))//搜索页
 const Login = lazy(() => import('@/pages/Login'))//登录页
+const Coze = lazy(() => import('@/pages/Coze'))//智能助手
 
 
 
@@ -39,16 +40,17 @@ function App() {
                   <ProtectRoute >
                     {/* 一个组件还包着一个组件 */}
                     <Stacks /> 
-                    <div>123</div>
-                    <div>456</div>
                   </ProtectRoute >
               }/>
               <Route path="/ai" element={
                     <ProtectRoute >
                     {/* 一个组件还包着一个组件 */}
                     <Ai /> 
-                    <div>123</div>
-                    <div>456</div>
+                  </ProtectRoute >} />
+               <Route path="/coze" element={
+                    <ProtectRoute >
+                    {/* 一个组件还包着一个组件 */}
+                    <Coze /> 
                   </ProtectRoute >} />
               <Route path="/account" element={<Account />} />
             </Route>  

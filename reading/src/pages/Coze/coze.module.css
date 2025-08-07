@@ -1,0 +1,253 @@
+/* src/components/LiteraryCharacterGenerator.module.css */
+.container {
+   position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  padding: 38px 12px 0 12px;
+  background-color: #f8f9fa;
+  overflow-y: auto;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.header h1 {
+  color: #2c3e50;
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+}
+
+.header p {
+  color: #7f8c8d;
+  font-size: 0.5rem;
+}
+
+.inputSection {
+  background: white;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  margin-bottom: 30px;
+}
+
+.inputGroup {
+  margin-bottom: 20px;
+}
+
+.inputLabel {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #2c3e50;
+  font-size: 0.5rem;
+}
+
+.optional {
+  color: #7f8c8d;
+  font-weight: normal;
+  font-size: 0.5rem;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.5rem;
+  transition: border-color 0.3s;
+}
+
+input[type="text"]:focus {
+  border-color: #3498db;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+.styleSelector {
+  background: #f8f9fa;
+  border-radius: 6px;
+  padding: 15px;
+}
+
+.styleOptions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.styleOption {
+  padding: 8px 15px;
+  background: #eef2f7;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.5rem;
+  transition: all 0.2s;
+}
+
+.styleOption:hover {
+  background: #dfe6f0;
+}
+
+.styleOption.active {
+  background: #3498db;
+  color: white;
+  font-weight: 600;
+}
+
+.customStyleInput {
+  margin-top: 10px;
+}
+
+.customStyleInput input {
+  width: 100%;
+}
+
+.generateButton {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.generateButton button {
+  background: #3498db;
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 6px;
+  font-size: 0.5rem;
+  cursor: pointer;
+  transition: background 0.3s;
+  font-weight: 600;
+}
+
+.generateButton button:hover {
+  background: #2980b9;
+}
+
+.generateButton button:disabled {
+  background: #bdc3c7;
+  cursor: not-allowed;
+}
+
+.status {
+  margin-top: 15px;
+  padding: 12px;
+  border-radius: 6px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.status:not(:empty) {
+  background: #e3f2fd;
+  border: 1px solid #bbdefb;
+  color: #1976d2;
+}
+
+.outputSection {
+  background: white;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  min-height: 500px;
+}
+
+.imageContainer {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.generatedImage {
+  max-width: 100%;
+  max-height: 500px;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border: 1px solid #eee;
+}
+
+.sceneDescription {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  border-left: 4px solid #3498db;
+}
+
+.sceneDescription h3 {
+  margin-top: 0;
+  color: #2c3e50;
+  font-size: 1.3rem;
+}
+
+.sceneDescription p {
+  line-height: 1.6;
+  font-size: 1.1rem;
+  color: #34495e;
+}
+
+.placeholder {
+  text-align: center;
+  padding: 50px 20px;
+  color: #7f8c8d;
+}
+
+.placeholderIcon {
+  font-size: 4rem;
+  margin-bottom: 20px;
+  opacity: 0.6;
+}
+
+.example {
+  margin-top: 30px;
+  text-align: left;
+  max-width: 500px;
+  margin: 30px auto 0;
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.example p {
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #2c3e50;
+}
+
+.example ul {
+  padding-left: 20px;
+  margin: 0;
+}
+
+.example li {
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .container {
+    padding: 15px;
+  }
+  
+  .inputSection, .outputSection {
+    padding: 15px;
+  }
+  
+  .styleOptions {
+    justify-content: center;
+  }
+}
