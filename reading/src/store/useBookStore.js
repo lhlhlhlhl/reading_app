@@ -16,6 +16,7 @@ const CATEGORIES = {
 //const mockBooks = mockBooksData.default.find(api => api.url === '/api/books')?.response()?.data || [];
 const res =await mockBooksData();
 const mockBooks = res.data;
+console.log(mockBooks)
 
 // 创建书籍存储
 const useBookStore = create(
@@ -73,6 +74,7 @@ const useBookStore = create(
           )
         }));
         get().saveBookshelfToLocalStorage();
+        //刷新stacks页面
 
       },
       // 从书架移除书籍

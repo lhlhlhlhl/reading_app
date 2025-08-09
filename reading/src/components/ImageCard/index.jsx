@@ -48,20 +48,24 @@ const ImageCard = (props) => {
       <div className={styles.bookInfo}>
         <div className={styles.bookName}>{book?.name || book?.bookName}</div>
         <div className={styles.bookAuthor}>{book?.author}</div>
-        <div className={styles.bookMeta}>
-          <span className={styles.rating}>{book?.rating?.toFixed(1) || book?.rating}</span>
-          <span className={styles.readCount}>{book?.readCount}</span>
+        <div className={styles.bookMetaWithButton}>
+          <div className={styles.bookMeta}>
+            <span className={styles.rating}>{book?.rating?.toFixed(1) || book?.rating}</span>
+            <span className={styles.readCount}>{book?.readCount}</span>
+          </div>
+          {/* 添加到书架按钮 */}
+          {!book?.isInBookshelf && (
+            <div 
+              className={styles.addToBookshelf}
+              onClick={(e) => {
+                e.stopPropagation();
+                props.onAddToBookshelf && props.onAddToBookshelf(book.id);
+              }}
+            >
+              +
+            </div>
+          )}
         </div>
-      </div>
-      {/* 点击显示编辑菜单 */}
-      <div 
-        className={styles.editIcon} 
-        onClick={(e) => {
-          e.stopPropagation();
-          onEditMenuClick && onEditMenuClick(e, book.id);
-        }}
-      >
-        ...
       </div>
     </div>
   );

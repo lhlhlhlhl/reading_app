@@ -7,6 +7,8 @@ import styles from './home.module.css';
 import ReadingStats from './ReadingStats';
 import Bookshelf from './Bookshelf';
 import RecommendedBooks from './RecommendedBooks';
+import SwiperBook from './SwiperBook';
+
 
 const Home = () => {
   useTitle('首页');
@@ -39,6 +41,10 @@ const Home = () => {
 
       {/* 书架 */}
       <Bookshelf setEditMenu={setEditMenu} closeEditMenu={closeEditMenu} editMenu={editMenu} />
+
+      {/* 轮播图 */}
+      <SwiperBook />
+
 
       {/* 为你推荐 */}
       <RecommendedBooks />

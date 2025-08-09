@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './stacks.module.css';
 import useBookStore from '@/store/useBookStore';
@@ -6,6 +6,7 @@ import  useTitle  from '@/hooks/useTitle';
 import Waterfall from '@/components/Waterfall';
 import { ArrowUp } from '@react-vant/icons'; // 使用项目中已有的图标库
 import { Search } from '@react-vant/icons';
+import { PullRefresh } from 'react-vant';
 
 
 
@@ -13,8 +14,6 @@ const Stacks = () => {
   useTitle('Reading-书库');
   const navigate = useNavigate();
   const bookStore = useBookStore();
-  const [editMenu, setEditMenu] = useState({ visible: false, x: 0, y: 0, bookId: null });
-  const [selectedBook, setSelectedBook] = useState(null);
   const [showSubCategories, setShowSubCategories] = useState(false);
   // 分页状态管理
   const [loading, setLoading] = useState(false);
@@ -23,50 +22,8 @@ const Stacks = () => {
   const [displayedBooks, setDisplayedBooks] = useState([]);
   const [showScrollTop, setShowScrollTop] = useState(false); // 控制回到顶部按钮显示
   const PAGE_SIZE = 8; // 每页加载数量
-
-  // 打开编辑菜单
-  const openEditMenu = (e, bookId) => {
-    e.stopPropagation();
-    const book = bookStore.getBookById(bookId);
-    setSelectedBook(book);
-    setEditMenu({
-      visible: true,
-      x: e.clientX - 100,
-      y: e.clientY - 50,
-      bookId
-    });
-  };
-
-  // 关闭编辑菜单
-  const closeEditMenu = () => {
-    setEditMenu({ visible: false, x: 0, y: 0, bookId: null });
-    setSelectedBook(null);
-  };
-
-  // 处理编辑菜单操作
-  const handleMenuAction = (action) => {
-    if (!editMenu.bookId) return;
-
-    switch (action) {
-      case 'addToBookshelf':
-        bookStore.addToBookshelf(editMenu.bookId);
-        break;
-      case 'markRead':
-        bookStore.markAsRead(editMenu.bookId);
-        break;
-      case 'markUnread':
-        bookStore.markAsUnread(editMenu.bookId);
-        break;
-      case 'top':
-        const book = bookStore.getBookById(editMenu.bookId);
-        bookStore.setBookTopStatus(editMenu.bookId, !book?.isTop);
-        break;
-      default:
-        break;
-    }
-
-    closeEditMenu();
-  };
+  const [refreshing, setRefreshing] = useState(false);
+const pullRefreshRef = useRef(null);
 
   // 切换主分类
   const handleCategoryChange = (categoryId) => {
@@ -142,6 +99,12 @@ const Stacks = () => {
       setLoading(false);
     }, 800);
   };
+  const addToBookshelf = (bookId) => {
+      bookStore.addToBookshelf(bookId);
+      // 添加书籍后重新加载初始书籍，触发页面刷新
+      loadInitialBooks();
+   }
+
 
   // 初始加载书籍
   useEffect(() => {
@@ -153,6 +116,15 @@ const Stacks = () => {
   useEffect(() => {
     console.log('当前显示的书籍数量:', displayedBooks.length);
   }, [displayedBooks]);
+
+  // 检查PullRefresh组件是否正确初始化
+  useEffect(() => {
+    if (pullRefreshRef.current) {
+      console.log('PullRefresh组件已初始化:', pullRefreshRef.current);
+    } else {
+      console.log('PullRefresh组件未初始化');
+    }
+  }, []);
 
   // 监听滚动事件，控制回到顶部按钮显示
   useEffect(() => {
@@ -171,9 +143,25 @@ const Stacks = () => {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+  //下拉刷新
+const onRefresh = async () => {
+    console.log('>>> onRefresh函数被触发 <<<');
+    setRefreshing(true);
+    try {
+      // 模拟网络请求延迟
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      // 刷新数据
+      loadInitialBooks();
+      console.log('>>> 刷新完成 <<<');
+    } catch (error) {
+      console.error('>>> 刷新失败:', error);
+    } finally {
+      setRefreshing(false);
+    }
+  };
 
   return (
-    <div className={styles.stacks} onClick={closeEditMenu}>
+    <div className={styles.stacks} >
       {/* 搜索栏 */}
       <div className={styles.searchBar} onClick={() => navigate('/search')}>
         <Search className={styles.searchIcon} size={18} />
@@ -234,21 +222,34 @@ const Stacks = () => {
           ))}
         </div>
 
-        {/* 书籍列表瀑布流 */}
+        {/* 书籍列表瀑布流 - 包裹在PullRefresh中 */}
         <div className={styles.waterfallContainer}>
-          <Waterfall
-            books={displayedBooks}
-            loading={loading}
-            fetchMore={fetchMore}
-            onBookClick={handleBookClick}
-            onEditMenuClick={openEditMenu}
-            hasMore={hasMore}
-          />
-          {loading && (
-            <div className={styles.loadingIndicator}>加载中...</div>
-          )}
-        </div>
+          <div className={styles.pullRefreshContainer}>
+            <PullRefresh
+              ref={pullRefreshRef}
+              successText="刷新成功"
+              pullingText="下拉即可刷新..."
+              loosingText="释放立即刷新..."
+              loadingText="加载中..."
+              onRefresh={onRefresh}
+              refreshing={refreshing}
+              style={{ height: '100%' }} // 确保组件有足够高度
+            >
+            <Waterfall
+              books={displayedBooks}
+              loading={loading}
+              fetchMore={fetchMore}
+              onBookClick={handleBookClick}
+              onAddToBookshelf={addToBookshelf}
 
+              hasMore={hasMore}
+            />
+            {/* {loading && (
+              <div className={styles.loadingIndicator}>加载中...</div>
+            )} */}
+            </PullRefresh>
+          </div>
+        </div>
       </div>
      
       {/* 回到顶部按钮 */}
@@ -262,30 +263,7 @@ const Stacks = () => {
         </button>
       )}
 
-      {/* 动态编辑栏 */}
-        {editMenu.visible && (
-          <div 
-            className={styles.editBar} 
-            style={{ 
-              left: editMenu.x,
-              top: editMenu.y,
-            }} 
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className={styles.editButton} onClick={() => handleMenuAction('addToBookshelf')}>
-              {selectedBook?.isInBookshelf ? '移除书架' : '添加到书架'}
-            </div>
-            <div className={styles.editButton} onClick={() => handleMenuAction('markRead')}>
-              标记已读
-            </div>
-            <div className={styles.editButton} onClick={() => handleMenuAction('markUnread')}>
-              标记未读
-            </div>
-            <div className={styles.editButton} onClick={() => handleMenuAction('top')}>
-              {selectedBook?.isTop ? '取消置顶' : '置顶书籍'}
-            </div>
-          </div>
-        )}
-        </div>
+      
+    </div>
   )}
 export default Stacks
