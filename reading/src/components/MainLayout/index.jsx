@@ -11,6 +11,7 @@ import{
     FriendsO,
     SettingO,
     UserO,
+    AddO,
 } from '@react-vant/icons'
 import {
     Outlet,
@@ -30,12 +31,18 @@ const tabs = [
         title:'书库',
         icon:<FriendsO/>,
         path:'/stacks',
+    }, {
+        title:'创造',
+        icon:<AddO/>,
+        path:'/coze',
+
     },
     {
-        title:'智能助手',
+        title:'书语',
         icon:<SettingO/>,
         path:'/ai',
     },
+   
     {
         title:'我的账户',
         icon:<UserO/>,

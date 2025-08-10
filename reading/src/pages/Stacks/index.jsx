@@ -210,18 +210,12 @@ const onRefresh = async () => {
       {/* 顶部主分类导航栏 */}
       <div className={styles.topCategoryNav}>
         <button
-            key='all'
-            className={`${styles.categoryButton} ${bookStore.activeCategory === 'all' ? styles.activeCategory : ''}`}
-            onClick={() => handleCategoryChange('all')}
-          >
-            全部
-          </button>
-          <button
-            className={styles.categoryButton}
-            onClick={onRefresh}
-          >
-            手动刷新
-          </button>
+          key='all'
+          className={`${styles.categoryButton} ${bookStore.activeCategory === 'all' ? styles.activeCategory : ''}`}
+          onClick={() => handleCategoryChange('all')}
+        >
+          全部
+        </button>
         {bookStore.getAllCategories().map(category => (
           <button
             key={category.id}

@@ -1,21 +1,228 @@
-.container{
-    position:fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 100;
-    overflow:hidden;
-    background:#f2f3f4;
+/* search.module.css */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #f8f9fa;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
 }
-.list{
-    position: absolute;
-    top: 80px;
-    background: #fff;
-    bottom: 0;
-    width: 100%;
+
+.wrapper {
+  padding: 16px;
+  max-width: 100%;
+  box-sizing: border-box;
 }
-.item{
-    font-size:24px;
-    padding: 20px 10px;
+
+/* 热搜榜样式 */
+.hot {
+  margin-top: 24px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  padding: 16px;
+}
+
+.hot h1 {
+  font-size: 36px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.hot .item {
+  display: flex;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #f5f5f5;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.hot .item:hover {
+  background-color: #f9f9f9;
+}
+
+.hot .item:last-child {
+  border-bottom: none;
+}
+
+/* 排名序号样式 */
+.hot .item::before {
+  content: "";
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  background-color: #f5f5f5;
+  color: #8c8c8c;
+  font-size: 28px;
+  font-weight: 500;
+  margin-right: 12px;
+}
+
+/* 前三名特殊样式 */
+.hot .item:nth-child(2)::before {
+  content: "1";
+  background-color: #f56c6c;
+  color: white;
+}
+
+.hot .item:nth-child(3)::before {
+  content: "2";
+  background-color: #e6a23c;
+  color: white;
+}
+
+.hot .item:nth-child(4)::before {
+  content: "3";
+  background-color: #67c23a;
+  color: white;
+}
+
+/* 其余排名 */
+.hot .item:nth-child(5)::before { content: "4"; }
+.hot .item:nth-child(6)::before { content: "5"; }
+.hot .item:nth-child(7)::before { content: "6"; }
+.hot .item:nth-child(8)::before { content: "7"; }
+.hot .item:nth-child(9)::before { content: "8"; }
+.hot .item:nth-child(10)::before { content: "9"; }
+.hot .item:nth-child(11)::before { content: "10"; }
+.hot .item:nth-child(12)::before { content: "11"; }
+
+/* 搜索历史样式 */
+.history {
+  margin-top: 24px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  padding: 16px;
+}
+
+.historyHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.history h2 {
+  font-size: 36px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.clearBtn {
+  font-size: 16px;
+  color: #666;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 4px;
+}
+
+.clearBtn:hover {
+  background-color: #f0f0f0;
+}
+
+.deleteBtn {
+  font-size: 18px;
+  color: #999;
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.deleteBtn:hover {
+  color: #ff4d4f;
+}
+
+.itemText {
+  flex: 1;
+}
+
+.history .item {
+  display: flex;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #f5f5f5;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.history .item:hover {
+  background-color: #f9f9f9;
+}
+
+.history .item:last-child {
+  border-bottom: none;
+}
+
+.history .item::before {
+  content: "🔍";
+  margin-right: 12px;
+  font-size: 32px;
+  color: #8c8c8c;
+}
+
+/* 建议列表样式 */
+.list {
+  margin-top: 16px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  padding: 16px;
+}
+
+.list .item {
+  display: flex;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #f5f5f5;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.list .item:hover {
+  background-color: #f9f9f9;
+}
+
+.list .item:last-child {
+  border-bottom: none;
+}
+
+.list .item::before {
+  content: "🔍";
+  margin-right: 12px;
+  font-size: 32px;
+  color: #8c8c8c;
+}
+
+/* 空状态提示 */
+.empty {
+  text-align: center;
+  padding: 40px 0;
+  color: #8c8c8c;
+  font-size: 28px;
+}
+
+/* 响应式调整 */
+@media (max-width: 480px) {
+  .hot h1, .history h2 {
+  font-size: 32px;
+}
+
+.hot .item, .history .item, .list .item {
+  font-size: 28px;
+  padding: 10px 0;
+}
 }
