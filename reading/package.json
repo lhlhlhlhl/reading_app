@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@react-vant/icons": "0.1.0",
+    "@tailwindcss/vite": "^4.1.11",
     "axios": "^1.11.0",
     "lib-flexible": "^0.3.2",
     "lucide-react": "^0.537.0",
@@ -19,6 +20,7 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.7.1",
+    "tailwindcss": "^4.1.11",
     "vite-plugin-mock": "^3.0.2",
     "zustand": "^5.0.7"
   },

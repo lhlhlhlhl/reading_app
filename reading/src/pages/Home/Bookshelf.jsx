@@ -15,12 +15,9 @@ const Bookshelf = ({ setEditMenu, closeEditMenu, editMenu }) => {
   // 获取书架数据
   useEffect(() => {
     fetchBookshelfData();
-    // 添加一个监听函数，只在书架相关数据变化时更新数据
-    const handleStorageChange = (event) => {
-      // 只监听书架相关的localStorage变化
-      if (event.key === 'bookshelf') {
-        refreshBookshelf();
-      }
+    // 可以添加一个监听函数，当localStorage变化时更新数据
+    const handleStorageChange = () => {
+      refreshBookshelf();
     };
     // 监听localStorage变化
     window.addEventListener('storage', handleStorageChange);

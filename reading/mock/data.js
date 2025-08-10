@@ -147,20 +147,10 @@ export default [
         for(let i=0;i<num;i++){
             //随机的内容，标题，描述，用户名，头像
             const randomData = Mock.mock({
-              title:'@ctitle',
-               desc:'@cparagraph(10,30)',
-            images:
-                {
-                    url:'@image(300x200,@color,#fff,图片)',
-                    alt:'@ctitle(5,10)'
-                },
+              title:'@ctitle'
             })
             console.log(randomData)
-            list.push({
-                title:randomData.title,
-                desc:randomData.desc,
-                images:randomData.images
-            })
+            list.push(`${randomData.title}${keyword}`)
         }
         return {
             code: 0,

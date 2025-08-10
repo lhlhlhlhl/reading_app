@@ -1,52 +1,139 @@
-.container{
-    background-color: #f5f5f5;
+/* ProfilePage.module.css */
+.profile-container {
+  padding: 0;
+  min-height: 100vh;
+  background-color: #f1f5f6;
+  padding-bottom: 120px; /* 增加更多底部内边距，防止被遮挡 */
+}
+.img{
+    width: 100%;
     height: 100%;
+    object-fit: cover;
 }
-.user{
-    background-color: #fff;
-    padding: 20px 16px;
-    display: flex;
-    align-items: center;
 
+/* 顶部导航栏 */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); */
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
-.nickname{
-    font-size: 36px;
-    font-weight: 500;
-}
-.level{
-    font-size: 28px;
-    color: #999;
-    margin-top: 8px;
-}
-.slogan{
-    font-size: 24px;
-    color: #ccc;
-    margin-top: 8px;
-}
-/* 九宫格 grid 行列同时布局*/
-.gridContainer{
-    display:grid;
-    grid-template-columns: repeat(3,1fr);
-    padding: 40px;
-    margin: 16px 32px;
-    background-color: #fff;
 
+.header-left, .header-right {
+  width: 40px;
 }
-.gridItem{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-    border: 1px solid #eee;
-    border-radius: 16px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    cursor:pointer;
+
+.header-title {
+  font-size: 32px;
+  font-weight: bold;
 }
-.gridItem .icon{
-    font-size: 48px;
-    margin-bottom: 16px;
+
+.header-right {
+  display: flex;
+  justify-content: flex-end;
+  gap: 32px;
 }
-.gridItem .text{
-    font-size: 24px;
+.header-left {
+  display: flex;
+  justify-content: flex-end;
+  gap: 32px;
+}
+
+.header-icon {
+  font-size: 32px;
+  cursor: pointer;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 12px;
+  margin: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.user-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  margin-right: 16px;
+  border: 2px solid #f0f0f0;
+}
+
+.badge {
+  background-color: #1677ff;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-size: 28px;
+  margin-left: 16px;
+}
+
+.card { /* 外部卡片容器 */
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 16px;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* 数据卡片样式 */
+.data-card {
+  padding: 16px;
+  border-radius: 12px;
+  margin-bottom: 0;
+}
+
+.card-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.card-content {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+.card-amount {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+/* 卡片网格容器 */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  padding: 16px;
+}
+
+
+
+.nav-icon {
+  font-size: 20px;
+  margin-bottom: 4px;
+}
+
+.nav-text {
+  font-size: 13px;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+  margin-left: 8px;
+  margin-right: 8px;
+}
+
+/* 覆盖Tailwind的text-sm类 */
+.text-sm {
+  font-size: 14px !important;
 }

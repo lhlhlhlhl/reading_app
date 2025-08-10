@@ -26,18 +26,7 @@ const RecommendedBooks = () => {
 
   // 处理换一批推荐书籍
   const handleChangeBatch = () => {
-    // setCurrentBatch((prevBatch) => {
-    //   const newBatch = prevBatch % 5 + 1; // 增加批次数量为5
-    //   // 从服务获取新的随机推荐书籍
-    //   const allRecommendedBooks = bookDataService.getRecommendedBooks();
-    //   // 确保每次都获取不同的推荐书籍
-    //   const startIndex = (newBatch - 1) * BATCH_SIZE;
-    //   const batchData = allRecommendedBooks.slice(startIndex, startIndex + BATCH_SIZE);
-    //   setRecommendedData(batchData);
-    //   return newBatch;
-    // });
     bookStore.refreshRecommendations();
-    // setRecommendedData(bookStore.recommendedBooks);
   };
 
   // 点击书籍进入详情页

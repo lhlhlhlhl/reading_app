@@ -14,7 +14,7 @@ const Stacks = () => {
   useTitle('Reading-书库');
   const navigate = useNavigate();
   const bookStore = useBookStore();
-  // const [editMenu, setEditMenu] = useState({ visible: false, x: 0, y: 0, bookId: null });
+  const [editMenu, setEditMenu] = useState({ visible: false, x: 0, y: 0, bookId: null });
   const [selectedBook, setSelectedBook] = useState(null);
   const [showSubCategories, setShowSubCategories] = useState(false);
   // 分页状态管理
@@ -26,6 +26,51 @@ const Stacks = () => {
   const PAGE_SIZE = 8; // 每页加载数量
   const [refreshing, setRefreshing] = useState(false);
 const pullRefreshRef = useRef(null);
+
+  // 打开编辑菜单
+  const openEditMenu = (e, bookId) => {
+    e.stopPropagation();
+    const book = bookStore.getBookById(bookId);
+    setSelectedBook(book);
+    setEditMenu({
+      visible: true,
+      x: e.clientX - 100,
+      y: e.clientY - 50,
+      bookId
+    });
+  };
+
+  // 关闭编辑菜单
+  const closeEditMenu = () => {
+    setEditMenu({ visible: false, x: 0, y: 0, bookId: null });
+    setSelectedBook(null);
+  };
+
+  // 处理编辑菜单操作
+  const handleMenuAction = (action) => {
+    if (!editMenu.bookId) return;
+
+    switch (action) {
+      case 'addToBookshelf':
+        bookStore.addToBookshelf(editMenu.bookId);
+        break;
+      case 'markRead':
+        bookStore.markAsRead(editMenu.bookId);
+        break;
+      case 'markUnread':
+        bookStore.markAsUnread(editMenu.bookId);
+        break;
+      case 'top':
+        const book = bookStore.getBookById(editMenu.bookId);
+        bookStore.setBookTopStatus(editMenu.bookId, !book?.isTop);
+        break;
+      default:
+        break;
+    }
+
+    closeEditMenu();
+  };
+
   // 切换主分类
   const handleCategoryChange = (categoryId) => {
     bookStore.setActiveCategory(categoryId);
@@ -51,10 +96,6 @@ const pullRefreshRef = useRef(null);
   const handleBookClick = (bookId) => {
     navigate(`/detail/${bookId}`);
   };
-
-  const onAddToBookshelf = (bookId) => {
-    bookStore.addToBookshelf(bookId);
-  }
 
   // 获取当前页的新书籍
   const getNewPageBooks = (page) => {
@@ -111,20 +152,24 @@ const pullRefreshRef = useRef(null);
     loadInitialBooks();
   }, [bookStore.activeCategory, bookStore.activeSubCategory]);
 
-  // 监听书籍数据变化，更新显示的书籍
+  // 监听displayedBooks变化，调试用
   useEffect(() => {
-    // 获取当前分类的所有书籍
-    const allBooks = bookStore.getCurrentCategoryBooks();
-    // 更新显示的书籍，保持当前页码
-    const currentBooks = getNewPageBooks(currentPage);
-    setDisplayedBooks(currentBooks);
-    // 更新是否有更多书籍的状态
-    setHasMore(currentBooks.length === PAGE_SIZE && allBooks.length > currentPage * PAGE_SIZE);
+    console.log('当前显示的书籍数量:', displayedBooks.length);
+  }, [displayedBooks]);
+
+  // 检查PullRefresh组件是否正确初始化
+  useEffect(() => {
+    if (pullRefreshRef.current) {
+      console.log('PullRefresh组件已初始化:', pullRefreshRef.current);
+    } else {
+      console.log('PullRefresh组件未初始化');
+    }
   }, []);
 
   // 监听滚动事件，控制回到顶部按钮显示
   useEffect(() => {
     const handleScroll = () => {
+      console.log('滚动事件触发，当前位置:', window.scrollY);
       // 降低阈值以便更容易测试按钮显示
       setShowScrollTop(window.scrollY > 100);
     };
@@ -138,9 +183,9 @@ const pullRefreshRef = useRef(null);
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
-
   //下拉刷新
-  const onRefresh = async () => {
+const onRefresh = async () => {
+    console.log('>>> onRefresh函数被触发 <<<');
     setRefreshing(true);
     try {
       // 模拟网络请求延迟
@@ -156,7 +201,7 @@ const pullRefreshRef = useRef(null);
   };
 
   return (
-    <div className={styles.stacks} >
+    <div className={styles.stacks} onClick={closeEditMenu}>
       {/* 搜索栏 */}
       <div className={styles.searchBar} onClick={() => navigate('/search')}>
         <Search className={styles.searchIcon} size={18} />
@@ -165,12 +210,18 @@ const pullRefreshRef = useRef(null);
       {/* 顶部主分类导航栏 */}
       <div className={styles.topCategoryNav}>
         <button
-          key='all'
-          className={`${styles.categoryButton} ${bookStore.activeCategory === 'all' ? styles.activeCategory : ''}`}
-          onClick={() => handleCategoryChange('all')}
-        >
-          全部
-        </button>
+            key='all'
+            className={`${styles.categoryButton} ${bookStore.activeCategory === 'all' ? styles.activeCategory : ''}`}
+            onClick={() => handleCategoryChange('all')}
+          >
+            全部
+          </button>
+          <button
+            className={styles.categoryButton}
+            onClick={onRefresh}
+          >
+            手动刷新
+          </button>
         {bookStore.getAllCategories().map(category => (
           <button
             key={category.id}
@@ -235,8 +286,7 @@ const pullRefreshRef = useRef(null);
               loading={loading}
               fetchMore={fetchMore}
               onBookClick={handleBookClick}
-              // onEditMenuClick={openEditMenu}
-              onAddToBookshelf={onAddToBookshelf}
+              onEditMenuClick={openEditMenu}
               hasMore={hasMore}
             />
             {/* {loading && (
@@ -258,6 +308,30 @@ const pullRefreshRef = useRef(null);
         </button>
       )}
 
+      {/* 动态编辑栏 */}
+        {editMenu.visible && (
+          <div 
+            className={styles.editBar} 
+            style={{ 
+              left: editMenu.x,
+              top: editMenu.y,
+            }} 
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className={styles.editButton} onClick={() => handleMenuAction('addToBookshelf')}>
+              {selectedBook?.isInBookshelf ? '移除书架' : '添加到书架'}
+            </div>
+            <div className={styles.editButton} onClick={() => handleMenuAction('markRead')}>
+              标记已读
+            </div>
+            <div className={styles.editButton} onClick={() => handleMenuAction('markUnread')}>
+              标记未读
+            </div>
+            <div className={styles.editButton} onClick={() => handleMenuAction('top')}>
+              {selectedBook?.isTop ? '取消置顶' : '置顶书籍'}
+            </div>
+          </div>
+        )}
     </div>
   )}
 export default Stacks
