@@ -1,0 +1,154 @@
+.container {
+  min-height: 100vh;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #fff;
+}
+
+.header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.backIcon {
+  font-size: 24px;
+  margin-right: 20px;
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.3);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  flex: 1;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.bookCard {
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 15px;
+  padding: 20px;
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
+  backdrop-filter: blur(10px);
+}
+
+.bookCover {
+  width: 150px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.bookInfo {
+  width: 100%;
+  text-align: center;
+}
+
+.bookName {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.bookAuthor {
+  font-size: 16px;
+  color: #ccc;
+  margin-bottom: 15px;
+}
+
+.bookRating {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.rating {
+  font-size: 20px;
+  font-weight: bold;
+  margin-right: 10px;
+  color: #ffd700;
+}
+
+.stars {
+  color: #ffd700;
+  font-size: 16px;
+}
+
+.bookCategory,
+.bookStatus,
+.bookWordCount {
+  font-size: 14px;
+  color: #ccc;
+  margin-bottom: 8px;
+}
+
+.bookDescription {
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 15px;
+  padding: 20px;
+  width: 100%;
+  max-width: 600px;
+  backdrop-filter: blur(10px);
+}
+
+.sectionTitle {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #fff;
+}
+
+.description {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #eee;
+}
+
+.loading {
+  font-size: 18px;
+  color: #fff;
+  text-align: center;
+  margin-top: 50px;
+}
+
+@media (min-width: 768px) {
+  .bookCard {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .bookCover {
+    margin-right: 30px;
+    margin-bottom: 0;
+  }
+
+  .bookInfo {
+    text-align: left;
+  }
+}

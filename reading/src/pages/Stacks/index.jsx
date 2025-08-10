@@ -14,6 +14,8 @@ const Stacks = () => {
   useTitle('Reading-书库');
   const navigate = useNavigate();
   const bookStore = useBookStore();
+  // const [editMenu, setEditMenu] = useState({ visible: false, x: 0, y: 0, bookId: null });
+  const [selectedBook, setSelectedBook] = useState(null);
   const [showSubCategories, setShowSubCategories] = useState(false);
   // 分页状态管理
   const [loading, setLoading] = useState(false);
@@ -24,7 +26,6 @@ const Stacks = () => {
   const PAGE_SIZE = 8; // 每页加载数量
   const [refreshing, setRefreshing] = useState(false);
 const pullRefreshRef = useRef(null);
-
   // 切换主分类
   const handleCategoryChange = (categoryId) => {
     bookStore.setActiveCategory(categoryId);
@@ -50,6 +51,10 @@ const pullRefreshRef = useRef(null);
   const handleBookClick = (bookId) => {
     navigate(`/detail/${bookId}`);
   };
+
+  const onAddToBookshelf = (bookId) => {
+    bookStore.addToBookshelf(bookId);
+  }
 
   // 获取当前页的新书籍
   const getNewPageBooks = (page) => {
@@ -99,12 +104,6 @@ const pullRefreshRef = useRef(null);
       setLoading(false);
     }, 800);
   };
-  const addToBookshelf = (bookId) => {
-      bookStore.addToBookshelf(bookId);
-      // 添加书籍后重新加载初始书籍，触发页面刷新
-      loadInitialBooks();
-   }
-
 
   // 初始加载书籍
   useEffect(() => {
@@ -112,24 +111,20 @@ const pullRefreshRef = useRef(null);
     loadInitialBooks();
   }, [bookStore.activeCategory, bookStore.activeSubCategory]);
 
-  // 监听displayedBooks变化，调试用
+  // 监听书籍数据变化，更新显示的书籍
   useEffect(() => {
-    console.log('当前显示的书籍数量:', displayedBooks.length);
-  }, [displayedBooks]);
-
-  // 检查PullRefresh组件是否正确初始化
-  useEffect(() => {
-    if (pullRefreshRef.current) {
-      console.log('PullRefresh组件已初始化:', pullRefreshRef.current);
-    } else {
-      console.log('PullRefresh组件未初始化');
-    }
+    // 获取当前分类的所有书籍
+    const allBooks = bookStore.getCurrentCategoryBooks();
+    // 更新显示的书籍，保持当前页码
+    const currentBooks = getNewPageBooks(currentPage);
+    setDisplayedBooks(currentBooks);
+    // 更新是否有更多书籍的状态
+    setHasMore(currentBooks.length === PAGE_SIZE && allBooks.length > currentPage * PAGE_SIZE);
   }, []);
 
   // 监听滚动事件，控制回到顶部按钮显示
   useEffect(() => {
     const handleScroll = () => {
-      console.log('滚动事件触发，当前位置:', window.scrollY);
       // 降低阈值以便更容易测试按钮显示
       setShowScrollTop(window.scrollY > 100);
     };
@@ -143,9 +138,9 @@ const pullRefreshRef = useRef(null);
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
   //下拉刷新
-const onRefresh = async () => {
-    console.log('>>> onRefresh函数被触发 <<<');
+  const onRefresh = async () => {
     setRefreshing(true);
     try {
       // 模拟网络请求延迟
@@ -240,8 +235,8 @@ const onRefresh = async () => {
               loading={loading}
               fetchMore={fetchMore}
               onBookClick={handleBookClick}
-              onAddToBookshelf={addToBookshelf}
-
+              // onEditMenuClick={openEditMenu}
+              onAddToBookshelf={onAddToBookshelf}
               hasMore={hasMore}
             />
             {/* {loading && (
@@ -263,7 +258,6 @@ const onRefresh = async () => {
         </button>
       )}
 
-      
     </div>
   )}
 export default Stacks

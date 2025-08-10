@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+// import { persist } from 'zustand/middleware';
 // 假设已配置路径别名，否则使用相对路径
 import {mockBooksData} from '@/api/books';
 
@@ -20,7 +20,6 @@ console.log(mockBooks)
 
 // 创建书籍存储
 const useBookStore = create(
-  persist(
     (set, get) => ({
       // 所有书籍数据
       allBooks: mockBooks,
@@ -52,7 +51,7 @@ const useBookStore = create(
       saveBookshelfToLocalStorage: () => {
         const bookshelf = get().getBookshelfBooks();
 
-        console.log(bookshelf,"7777");
+        console.log(bookshelf,"书放在localstorage");
 
         // console.log(bookshelf,"1111");
         localStorage.setItem('bookshelf', JSON.stringify(bookshelf));
@@ -61,7 +60,7 @@ const useBookStore = create(
       // 从本地存储获取书架书籍
       getBookshelfFromLocalStorage: () => {
         const bookshelf = localStorage.getItem('bookshelf');
-        console.log(JSON.parse(bookshelf),"444");
+        console.log(JSON.parse(bookshelf),"从本地存储获取书架书籍");
 
         return bookshelf ? JSON.parse(bookshelf) : [];
       },
@@ -75,6 +74,7 @@ const useBookStore = create(
         }));
         get().saveBookshelfToLocalStorage();
         //刷新stacks页面
+        get().getBookshelfBooks();
 
       },
       // 从书架移除书籍
@@ -97,6 +97,9 @@ const useBookStore = create(
             book.id === bookId ? { ...book, isRead: true, readProgress: 100 } : book
           )
         }));
+        get().saveBookshelfToLocalStorage();
+        //刷新
+        get().getBookshelfBooks();
       },
       // 标记书籍为未读
       markAsUnread: (bookId) => {
@@ -105,6 +108,9 @@ const useBookStore = create(
             book.id === bookId ? { ...book, isRead: false, readProgress: 0 } : book
           )
         }));
+        get().saveBookshelfToLocalStorage();
+        //刷新
+        get().getBookshelfBooks();
       },
       // 设置书籍置顶状态
       setBookTopStatus: (bookId, isTop) => {
@@ -121,6 +127,7 @@ const useBookStore = create(
 
          get().saveBookshelfToLocalStorage();
         // get().getBookshelfFromLocalStorage();
+        get().getBookshelfBooks();
 
 
       },
@@ -131,6 +138,9 @@ const useBookStore = create(
             book.id === bookId ? { ...book, cover: newCover } : book
           )
         }));
+        get().saveBookshelfToLocalStorage();
+        //刷新
+        get().getBookshelfBooks();
       },
       // 更改当前分类
       setActiveCategory: (category) => {
@@ -191,14 +201,7 @@ const useBookStore = create(
         }));
       }
     }),
-    {
-      name: 'reading-app-books', // 本地存储的键名
-      // 只持久化allBooks，因为其他状态是派生的或临时的
-      partialize: (state) => ({ allBooks: state.allBooks }),
-      // 使用localStorage
-      storage: localStorage
-    }
-  )
+    
 );
 
 export default useBookStore;

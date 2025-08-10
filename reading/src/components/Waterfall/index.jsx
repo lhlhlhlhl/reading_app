@@ -11,7 +11,6 @@ const Waterfall = (props) =>{
         books,
         fetchMore,
         onBookClick,
-        onEditMenuClick,
         onAddToBookshelf,
         hasMore = true // 是否还有更多书籍可加载，默认为true
     } = props

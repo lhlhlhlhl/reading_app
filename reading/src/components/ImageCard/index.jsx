@@ -2,10 +2,9 @@ import { useState, useEffect, useRef } from 'react';
 import styles from './imageCard.module.css';
 
 const ImageCard = (props) => {
-  const { book, onClick, onEditMenuClick } = props;
+  const { book, onClick, onAddToBookshelf } = props;
   const imgRef = useRef(null);
-  const [showMenu, setShowMenu] = useState(false);
-
+  // console.log(onAddToBookshelf)
   // 图片懒加载实现
   useEffect(() => {
     const observer = new IntersectionObserver(([entry], obs) => {
@@ -29,7 +28,7 @@ const ImageCard = (props) => {
         observer.unobserve(imgRef.current);
       }
     };
-  }, []);
+  }, [imgRef.current]);
 
   return (
     <div className={styles.bookItem} onClick={onClick}>
@@ -59,7 +58,7 @@ const ImageCard = (props) => {
               className={styles.addToBookshelf}
               onClick={(e) => {
                 e.stopPropagation();
-                props.onAddToBookshelf && props.onAddToBookshelf(book.id);
+                onAddToBookshelf(book.id);
               }}
             >
               +

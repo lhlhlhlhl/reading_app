@@ -15,9 +15,12 @@ const Bookshelf = ({ setEditMenu, closeEditMenu, editMenu }) => {
   // 获取书架数据
   useEffect(() => {
     fetchBookshelfData();
-    // 可以添加一个监听函数，当localStorage变化时更新数据
-    const handleStorageChange = () => {
-      refreshBookshelf();
+    // 添加一个监听函数，只在书架相关数据变化时更新数据
+    const handleStorageChange = (event) => {
+      // 只监听书架相关的localStorage变化
+      if (event.key === 'bookshelf') {
+        refreshBookshelf();
+      }
     };
     // 监听localStorage变化
     window.addEventListener('storage', handleStorageChange);
@@ -57,7 +60,7 @@ const Bookshelf = ({ setEditMenu, closeEditMenu, editMenu }) => {
   // 长按事件处理
   const longPressTimer = useRef(null);
   const lastTouchTime = useRef(0);
-  const LONG_PRESS_DELAY = 200; // 长按触发时间(毫秒)
+  const LONG_PRESS_DELAY = 1000; // 长按触发时间(毫秒)
 
   // 开始长按检测
   const startLongPress = (e, bookId) => {
@@ -186,6 +189,7 @@ const Bookshelf = ({ setEditMenu, closeEditMenu, editMenu }) => {
         }}
         onClick={(e) => e.stopPropagation()}
       >
+        {/* 编辑栏：阅读 */}
         <div className={styles.menuItem} onClick={(e) => {
           e.stopPropagation();
           handleMenuAction('read', editMenu?.bookId);
@@ -193,6 +197,7 @@ const Bookshelf = ({ setEditMenu, closeEditMenu, editMenu }) => {
           <span className={styles.menuIcon}>📖</span>
           阅读
         </div>
+        {/* 编辑栏：置顶状态切换 */}
         <div className={styles.menuItem} onClick={(e) => {
           e.stopPropagation();
           handleMenuAction('top', editMenu?.bookId);
@@ -200,20 +205,19 @@ const Bookshelf = ({ setEditMenu, closeEditMenu, editMenu }) => {
           <span className={styles.menuIcon}>🔝</span>
           {editMenu?.bookId && bookStore.getBookById(editMenu?.bookId)?.isTop ? '取消置顶':'置顶'}
         </div>
+        {/* 编辑栏：阅读状态切换 */}
         <div className={styles.menuItem} onClick={(e) => {
           e.stopPropagation();
-          handleMenuAction('markRead', editMenu?.bookId);
+          const book = editMenu?.bookId && bookStore.getBookById(editMenu?.bookId);
+          handleMenuAction(book?.isRead ? 'markUnread' : 'markRead', editMenu?.bookId);
         }}>
-          <Success className={styles.menuIcon} size={16} />
-          标为已读完
+          {editMenu?.bookId && bookStore.getBookById(editMenu?.bookId)?.isRead ? 
+            <Clock className={styles.menuIcon} size={16} /> : 
+            <Success className={styles.menuIcon} size={16} />
+          }
+          {editMenu?.bookId && bookStore.getBookById(editMenu?.bookId)?.isRead ? '标为未读' : '标为已读完'}
         </div>
-        <div className={styles.menuItem} onClick={(e) => {
-          e.stopPropagation();
-          handleMenuAction('markUnread', editMenu?.bookId);
-        }}>
-          <Clock className={styles.menuIcon} size={16} />
-          标为未读
-        </div>
+        {/* 编辑栏：修改封面 */}
         <div className={styles.menuItem} onClick={(e) => {
           e.stopPropagation();
           handleMenuAction('changeCover', editMenu?.bookId);
@@ -221,6 +225,7 @@ const Bookshelf = ({ setEditMenu, closeEditMenu, editMenu }) => {
           <Star className={styles.menuIcon} size={16} />
           修改封面
         </div>
+        {/* 编辑栏：移除书架 */}
         <div className={styles.menuItem + ' ' + styles.delete} onClick={(e) => {
           e.stopPropagation();
           handleMenuAction('remove', editMenu?.bookId);
