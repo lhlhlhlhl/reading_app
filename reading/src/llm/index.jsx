@@ -78,6 +78,16 @@ export const chat = async (
             })
         });
         const data = await response.json();
+
+        // 检查响应数据是否有效
+        if (!data || !data.choices || data.choices.length === 0) {
+            console.error('Invalid API response:', data);
+            return {
+                code: 1,
+                msg: '获取AI回复失败，响应数据无效'
+            };
+        }
+
         return {
             code: 0,
             data: {
@@ -102,12 +112,4 @@ export const kimiChat = async(messages)=>{
     )
     return res.data.content
 }
-export const generateAvatar = async(text)=>{
 
-  //设计prompt
-  const prompt=`
-  你是一位漫画设计师，需要为用户设计头像，主打可爱的风格。
-  用户的信息是：${text}
-  要求有个性，有设计感
-  `
-}

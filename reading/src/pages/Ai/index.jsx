@@ -23,29 +23,24 @@ const Trip = () => {
   const [isSending,setIsSending] = useState(false)
   //数据驱动界面
   //静态界面
-  const [messages,setMessages] = useState([
-    {
-      id:1,
-      content:'hello~',
-      role:'user'
-    },
-    {
-      id:2,
-      content:'hello,I am your assistant ,I can help you with your travel',
-      role:'assistant'
-    },
-    
-  ])
+  const [messages,setMessages] = useState([])
+  // 快速提问函数
+  const handleQuickQuestion = (question) => {
+    setText(question);
+    handleChat();
+  }
+
   const handleChat =async()=>{  
     if(text.trim() === '') {
     Toast.info({
-      message:'内容不能为空'
+      message:'内容不能为空',
     })
     return
   }
   setIsSending(true)
   setText('')
 
+  // 添加用户消息
   setMessages((prev)=>{
     return [
     ...prev,
@@ -67,21 +62,23 @@ const Trip = () => {
   })
   setIsSending(false)
   }
-  // useEffect(()=>{
-  //   const fetchChat = async()=>{
-  //     const res = await kimiChat([
-  //       {
-  //         role:'user',
-  //         content:'赣州旅游推荐'
-  //       }
-  //     ])
-  //     console.log(res)
-  //   }
-  //   fetchChat()
-  // },[])
   
   return (
-    <div className='flex flex-col h-all'>
+    <div className={styles.container}>
+      <div className={styles.title}>
+        <span className="mr-2">📚</span> Reading-书语
+      </div>
+      
+      {/* 提问示例区域 */}
+      <div className={styles.questionExamples}>
+        <div className={styles.exampleTitle}>常见问题:</div>
+        <div className={styles.exampleButtons}>
+          <button onClick={() => handleQuickQuestion('推荐一本经典小说')} className={styles.exampleButton}>推荐一本经典小说</button>
+          <button onClick={() => handleQuickQuestion('《活着》的主题思想是什么？')} className={styles.exampleButton}>《活着》的主题思想</button>
+          <button onClick={() => handleQuickQuestion('如何提高阅读理解能力？')} className={styles.exampleButton}>提高阅读理解能力</button>
+        </div>
+      </div>
+      
       <div className={`flex-1 ${styles.chatArea}`}>
         {
           messages.map((msg,index)=>{
@@ -117,6 +114,7 @@ const Trip = () => {
             };
             
             return (
+
               <div 
               key={index}
               className={`
@@ -147,6 +145,8 @@ const Trip = () => {
           type='primary'
           onClick={handleChat}
           disabled={isSending}
+          className={styles.sendButton}
+
         >
           发送
         </Button>

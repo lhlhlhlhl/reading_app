@@ -44,46 +44,8 @@ const Home = () => {
 
       {/* 轮播图 */}
       <SwiperBook />
-
-
       {/* 为你推荐 */}
       <RecommendedBooks />
-
-      {/* 编辑菜单 */}
-        {/* <div
-        className={`${styles.longPressMenu} ${editMenu.visible ? styles.menuActive : ''}`}
-        style={{ 
-          left: editMenu.x,
-          top: editMenu.y,
-          display: editMenu.visible ? 'block' : 'none'
-        }}
-        onClick={(e) => e.stopPropagation()}
-      >
-          <div className={styles.menuItem}>
-            <span className={styles.menuIcon}>📖</span>
-            阅读
-          </div>
-          <div className={styles.menuItem}>
-            <span className={styles.menuIcon}>🔝</span>
-            移至顶部
-          </div>
-          <div className={styles.menuItem}>
-            <Success className={styles.menuIcon} size={16} />
-            标为已读完
-          </div>
-          <div className={styles.menuItem}>
-            <Clock className={styles.menuIcon} size={16} />
-            标为未读
-          </div>
-          <div className={styles.menuItem}>
-            <Star className={styles.menuIcon} size={16} />
-            修改封面
-          </div>
-          <div className={styles.menuItem + ' ' + styles.delete}>
-            <Delete className={styles.menuIcon} size={16} />
-            移除书架
-          </div>
-        </div> */}
       
     </div>
   );

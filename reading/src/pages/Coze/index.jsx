@@ -4,7 +4,8 @@ import styles from './coze.module.css';
 import useTitle from '@/hooks/useTitle';
 
 const Coze = () => {
-  useTitle('Reading——创造')
+  useTitle('Reading——创造');
+  const [showLargeImage, setShowLargeImage] = useState(false);
   const workflowUrl = 'https://api.coze.cn/v1/workflow/run';
   const workflow_id = '7534590579121143860'; // 替换为您的实际工作流ID
   const patToken = import.meta.env.VITE_PAT_TOKEN;
@@ -155,10 +156,14 @@ const Coze = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.header}>
-        <h1>文学人物图像生成</h1>
+     
+      <div className={styles.title}>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <span className="title-text">✨</span>
+          <span className="title-text">Reading-创造</span>
+        </div>
+        <p className={styles.Text}>输入书名和人物，生成符合原著描述的图像场景</p>
 
-        <p>输入书名和人物，生成符合原著描述的图像场景</p>
       </div>
       
       <div className={styles.inputSection}>
@@ -171,9 +176,9 @@ const Coze = () => {
             placeholder="输入书名，如：红楼梦"
             list="bookSuggestions"
           />
-          <datalist id="bookSuggestions">
+          <datalist id="bookSuggestions" >
             {Object.keys(classicBooks).map(book => (
-              <option key={book} value={book} />
+              <option key={book} value={book} className={styles.bookSuggestions} />
             ))}
           </datalist>
         </div>
@@ -187,9 +192,9 @@ const Coze = () => {
             placeholder="输入人物名称"
             list="characterSuggestions"
           />
-          <datalist id="characterSuggestions">
+          <datalist id="characterSuggestions" >
             {bookTitle && classicBooks[bookTitle]?.characters.map(char => (
-              <option key={char} value={char} />
+              <option key={char} value={char} className={styles.bookSuggestions}/>
             ))}
           </datalist>
         </div>
@@ -205,9 +210,9 @@ const Coze = () => {
             placeholder="输入场景描述，如：葬花"
             list="sceneSuggestions"
           />
-          <datalist id="sceneSuggestions">
+          <datalist id="sceneSuggestions" >
             {bookTitle && classicBooks[bookTitle]?.scenes.map(scene => (
-              <option key={scene} value={scene} />
+              <option key={scene} value={scene}className={styles.bookSuggestions} />
             ))}
           </datalist>
         </div>
@@ -261,8 +266,22 @@ const Coze = () => {
                 src={imgUrl} 
                 alt={`${bookTitle}中的${character}`} 
                 className={styles.generatedImage}
+                onClick={() => setShowLargeImage(true)}
               />
             </div>
+
+            {showLargeImage && (
+              <div className={styles.imageModal} onClick={() => setShowLargeImage(false)}>
+                <img 
+                  src={imgUrl} 
+                  alt={`${bookTitle}中的${character} - 放大`} 
+                  className={styles.largeImage}
+                />
+                <button className={styles.closeButton} onClick={() => setShowLargeImage(false)}>
+                  ×
+                </button>
+              </div>
+            )}
             
             {enhancedScene && (
               <div className={styles.sceneDescription}>

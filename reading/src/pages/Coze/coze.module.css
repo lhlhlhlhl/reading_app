@@ -1,41 +1,60 @@
 /* src/components/LiteraryCharacterGenerator.module.css */
 .container {
-   position: fixed;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   width: 100%;
   height: 100%;
-  padding: 38px 12px 0 12px;
+  padding: 38px 12px 120px 12px; /* 增加底部内边距 */
   background-color: #f8f9fa;
   overflow-y: auto;
   max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
+  margin: 0 120px 0 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: #333;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  
+}
+.title{
+    font-size: 48px;
+    font-weight: bold;
+    margin:0px 16px 8px 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #333;
+    background-color: #e0f2fe;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+.Text{
+    font-size: 0.3rem;
+    font-weight: bold;
+    color: gray;
 }
 
-.header {
-  text-align: center;
-  margin-bottom: 30px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid #eaeaea;
+.title > span {
+    font-size: 2rem;
+    margin-right: 8px;
 }
 
-.header h1 {
-  color: #2c3e50;
-  margin-bottom: 10px;
-  font-size: 1.1rem;
+.title-text {
+    font-size: 0.5rem;
+    font-weight: bold;
+    color: #333;
 }
 
-.header p {
-  color: #7f8c8d;
-  font-size: 0.5rem;
+.text-sm {
+    font-size: 0.5rem;
+    color: #7f8c8d;
+    margin-top: 8px;
 }
+
 
 .inputSection {
   background: white;
@@ -54,13 +73,13 @@
   margin-bottom: 8px;
   font-weight: 600;
   color: #2c3e50;
-  font-size: 0.5rem;
+  font-size: 0.4rem;
 }
 
 .optional {
   color: #7f8c8d;
   font-weight: normal;
-  font-size: 0.5rem;
+  font-size: 0.4rem;
 }
 
 input[type="text"] {
@@ -68,14 +87,14 @@ input[type="text"] {
   padding: 12px 15px;
   border: 1px solid #ddd;
   border-radius: 6px;
-  font-size: 0.5rem;
+  font-size: 0.3rem;
   transition: border-color 0.3s;
 }
 
 input[type="text"]:focus {
-  border-color: #3498db;
+  border-color: #73b1db;
   outline: none;
-  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+  box-shadow: 0 0 0 3px rgba(115, 177, 219, 0.2);
 }
 
 .styleSelector {
@@ -97,7 +116,7 @@ input[type="text"]:focus {
   border: none;
   border-radius: 20px;
   cursor: pointer;
-  font-size: 0.5rem;
+  font-size: 0.3rem;
   transition: all 0.2s;
 }
 
@@ -130,7 +149,7 @@ input[type="text"]:focus {
   border: none;
   padding: 12px 30px;
   border-radius: 6px;
-  font-size: 0.5rem;
+  font-size: 0.3rem;
   cursor: pointer;
   transition: background 0.3s;
   font-weight: 600;
@@ -168,6 +187,8 @@ input[type="text"]:focus {
 }
 
 .imageContainer {
+  max-width: 90%; /* 图片宽度不会超过其容器 */
+  height: auto;    /* 维持原始宽高比例 */
   text-align: center;
   margin-bottom: 30px;
 }
@@ -190,12 +211,12 @@ input[type="text"]:focus {
 .sceneDescription h3 {
   margin-top: 0;
   color: #2c3e50;
-  font-size: 1.3rem;
+  font-size: 0.5rem;
 }
 
 .sceneDescription p {
   line-height: 1.6;
-  font-size: 1.1rem;
+  font-size: 0.3rem;
   color: #34495e;
 }
 
@@ -203,10 +224,11 @@ input[type="text"]:focus {
   text-align: center;
   padding: 50px 20px;
   color: #7f8c8d;
+  margin-bottom: 120px;
 }
 
 .placeholderIcon {
-  font-size: 4rem;
+  font-size: 2rem;
   margin-bottom: 20px;
   opacity: 0.6;
 }
@@ -237,10 +259,53 @@ input[type="text"]:focus {
   line-height: 1.5;
 }
 
+.imageModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  cursor: pointer;
+}
+
+.largeImage {
+  max-width: 90%;
+  max-height: 90vh;
+  border-radius: 8px;
+}
+
+.closeButton {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: rgba(255, 255, 255, 0.3);
+  border: none;
+  color: white;
+  font-size: 24px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s;
+}
+
+.closeButton:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
 /* 响应式设计 */
 @media (max-width: 768px) {
   .container {
-    padding: 15px;
+    padding: 15px 15px 120px 15px; /* 移动端增加底部内边距 */
+    margin: 0; /* 移动端重置margin */
   }
   
   .inputSection, .outputSection {
@@ -250,4 +315,13 @@ input[type="text"]:focus {
   .styleOptions {
     justify-content: center;
   }
+  .bookSuggestions {
+  max-height: 150px;
+  overflow-y: auto;
+  font-size: 0.08rem !important;
+  color: #333 !important;
+  padding: 2px 0 !important;
+  /* 确保样式优先级 */
 }
+}
+
