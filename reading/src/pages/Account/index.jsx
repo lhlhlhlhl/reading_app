@@ -1,13 +1,25 @@
 import { useState,useEffect} from 'react';
 import styles from './account.module.css';
-import { useNavigate } from 'react-router-dom';
 import ReadingStats from '../Home/ReadingStats';
 import SettingsPanel from '@/components/SettingsPanel';
+import useTitle from '@/hooks/useTitle';
+import { AccountSkeleton } from '@/components/Skeleton';
+
 
 const ReadingProfile = () => {
-  const navigate = useNavigate();
+  useTitle('Reading—我的');
+  const [loading, setLoading] = useState(true);
   const [settingsVisible, setSettingsVisible] = useState(false);
   const [settingsPosition, setSettingsPosition] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    // 模拟数据加载
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleSettingsClick = (e) => {
     e.stopPropagation();
@@ -39,6 +51,10 @@ const ReadingProfile = () => {
 
   return (
     <div className={`${styles['profile-container']} bg-gray-50 min-h-screen`}>
+      {loading ? (
+      <AccountSkeleton />
+    ) : (
+      <>
       {/* 顶部导航栏 */}
       <div className={styles['header']}>
         <div className={styles['header-left']}>
@@ -104,20 +120,6 @@ const ReadingProfile = () => {
           </div>
         </div>
       </div>
-
-      {/* 阅读时长卡片 */}
-      {/* <div className={styles['card']} style={{margin: '0 16px 16px 16px'}}>
-        <div className="flex items-center p-4">
-          <span className="text-red-500 mr-3">⏱️</span>
-          <div>
-            <h3 className={styles['card-title']}>阅读时长</h3>
-            <p className="text-sm text-gray-500">本月小于1分钟</p>
-          </div>
-          <div className="ml-auto">
-            <p className={styles['card-amount']}>小于1分钟</p>
-          </div>
-        </div>
-      </div> */}
       <div style={{margin: '0 16px 16px 16px'}}>
         <ReadingStats />
       </div>
@@ -162,6 +164,7 @@ const ReadingProfile = () => {
       onClose={handleSettingsClose}
       position={settingsPosition}
     />
+    </>)}
     </div>
     
   );

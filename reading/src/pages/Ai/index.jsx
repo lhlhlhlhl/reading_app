@@ -17,13 +17,24 @@ import {
   ChatO,
   UserO,
 } from '@react-vant/icons'
+import { AiSkeleton } from '@/components/Skeleton'
 const Trip = () => {
   useTitle('Reading-伴读AI')
+  const [loading, setLoading] = useState(true)
   const [text,setText] = useState('')
   const [isSending,setIsSending] = useState(false)
   //数据驱动界面
   //静态界面
   const [messages,setMessages] = useState([])
+
+  useEffect(() => {
+    // 模拟数据加载
+    const timer = setTimeout(() => {
+      setLoading(false)
+    }, 1500)
+
+    return () => clearTimeout(timer)
+  }, [])
   // 快速提问函数
   const handleQuickQuestion = (question) => {
     setText(question);
@@ -65,6 +76,10 @@ const Trip = () => {
   
   return (
     <div className={styles.container}>
+      {loading ? (
+      <AiSkeleton />
+    ) : (
+      <>
       <div className={styles.title}>
         <span className="mr-2">📚</span> Reading-书语
       </div>
@@ -154,6 +169,7 @@ const Trip = () => {
        {isSending && (<div className='fixed-loading'>{/*离开文档流 */}
         <Loading type='ball'/>
       </div>)}
+      </>)}
 
     </div>
   )

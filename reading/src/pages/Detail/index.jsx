@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import styles from './detail.module.css';
 
 const Detail = () => {
-  useTitle('Reading详情页');
+  useTitle('Reading-详情页');
   const navigate = useNavigate();
   const { id } = useParams();
   const bookStore = useBookStore();

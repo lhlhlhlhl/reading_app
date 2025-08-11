@@ -7,7 +7,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+  background-image: url('https://tse2.mm.bing.net/th/id/OIP.DitfIiNVElFsmwRen1shPAHaLG?r=0&rs=1&pid=ImgDetMain&o=7&rm=3');
   background-size: cover;
   background-position: center;
   padding: 20px;
@@ -67,9 +67,10 @@
 }
 
 .username {
-  font-size: 24px;
+  font-size: 38px;
   font-weight: bold;
   margin-bottom: 10px;
+  color: black;
 }
 
 .rightPanel {

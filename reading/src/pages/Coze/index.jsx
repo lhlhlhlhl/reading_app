@@ -2,13 +2,24 @@
 import { useState, useEffect } from 'react';
 import styles from './coze.module.css';
 import useTitle from '@/hooks/useTitle';
+import { CozeSkeleton } from '@/components/Skeleton';
 
 const Coze = () => {
-  useTitle('Reading——创造');
+  useTitle('Reading—创造');
+  const [loading, setLoading] = useState(true);
   const [showLargeImage, setShowLargeImage] = useState(false);
   const workflowUrl = 'https://api.coze.cn/v1/workflow/run';
   const workflow_id = '7534590579121143860'; // 替换为您的实际工作流ID
   const patToken = import.meta.env.VITE_PAT_TOKEN;
+
+  useEffect(() => {
+    // 模拟数据加载
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   // 状态管理
   const [bookTitle, setBookTitle] = useState('');
@@ -156,7 +167,10 @@ const Coze = () => {
 
   return (
     <div className={styles.container}>
-     
+     {loading ? (
+      <CozeSkeleton />
+    ) : (
+      <>
       <div className={styles.title}>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <span className="title-text">✨</span>
@@ -305,6 +319,8 @@ const Coze = () => {
           </div>
         )}
       </div>
+      </>)}
+
     </div>
   );
 };
