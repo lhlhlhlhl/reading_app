@@ -14,8 +14,8 @@ const Stacks = () => {
   useTitle('Reading-书库');
   const navigate = useNavigate();
   const bookStore = useBookStore();
-  const [editMenu, setEditMenu] = useState({ visible: false, x: 0, y: 0, bookId: null });
-  const [selectedBook, setSelectedBook] = useState(null);
+  // const [editMenu, setEditMenu] = useState({ visible: false, x: 0, y: 0, bookId: null });
+  // const [selectedBook, setSelectedBook] = useState(null);
   const [showSubCategories, setShowSubCategories] = useState(false);
   // 分页状态管理
   const [loading, setLoading] = useState(false);
@@ -26,50 +26,6 @@ const Stacks = () => {
   const PAGE_SIZE = 8; // 每页加载数量
   const [refreshing, setRefreshing] = useState(false);
 const pullRefreshRef = useRef(null);
-
-  // 打开编辑菜单
-  const openEditMenu = (e, bookId) => {
-    e.stopPropagation();
-    const book = bookStore.getBookById(bookId);
-    setSelectedBook(book);
-    setEditMenu({
-      visible: true,
-      x: e.clientX - 100,
-      y: e.clientY - 50,
-      bookId
-    });
-  };
-
-  // 关闭编辑菜单
-  const closeEditMenu = () => {
-    setEditMenu({ visible: false, x: 0, y: 0, bookId: null });
-    setSelectedBook(null);
-  };
-
-  // 处理编辑菜单操作
-  const handleMenuAction = (action) => {
-    if (!editMenu.bookId) return;
-
-    switch (action) {
-      case 'addToBookshelf':
-        bookStore.addToBookshelf(editMenu.bookId);
-        break;
-      case 'markRead':
-        bookStore.markAsRead(editMenu.bookId);
-        break;
-      case 'markUnread':
-        bookStore.markAsUnread(editMenu.bookId);
-        break;
-      case 'top':
-        const book = bookStore.getBookById(editMenu.bookId);
-        bookStore.setBookTopStatus(editMenu.bookId, !book?.isTop);
-        break;
-      default:
-        break;
-    }
-
-    closeEditMenu();
-  };
 
   // 切换主分类
   const handleCategoryChange = (categoryId) => {
@@ -190,8 +146,15 @@ const onRefresh = async () => {
     try {
       // 模拟网络请求延迟
       await new Promise(resolve => setTimeout(resolve, 1500));
-      // 刷新数据
-      loadInitialBooks();
+      // 随机打乱当前显示的书籍顺序
+      setDisplayedBooks(prevBooks => {
+        const shuffledBooks = [...prevBooks];
+        for (let i = shuffledBooks.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [shuffledBooks[i], shuffledBooks[j]] = [shuffledBooks[j], shuffledBooks[i]];
+        }
+        return shuffledBooks;
+      });
       console.log('>>> 刷新完成 <<<');
     } catch (error) {
       console.error('>>> 刷新失败:', error);
@@ -199,9 +162,19 @@ const onRefresh = async () => {
       setRefreshing(false);
     }
   };
+  const handleAddToBookshelf = (bookId) => {
+    bookStore.addToBookshelf(bookId);
+    // 更新displayedBooks中的书籍状态
+    setDisplayedBooks(prevBooks => 
+      prevBooks.map(book => 
+        book.id === bookId ? { ...book, isInBookshelf: true } : book
+      )
+    );
+  }
+
 
   return (
-    <div className={styles.stacks} onClick={closeEditMenu}>
+    <div className={styles.stacks} >
       {/* 搜索栏 */}
       <div className={styles.searchBar} onClick={() => navigate('/search')}>
         <Search className={styles.searchIcon} size={18} />
@@ -216,12 +189,7 @@ const onRefresh = async () => {
           >
             全部
           </button>
-          <button
-            className={styles.categoryButton}
-            onClick={onRefresh}
-          >
-            手动刷新
-          </button>
+          
         {bookStore.getAllCategories().map(category => (
           <button
             key={category.id}
@@ -279,14 +247,16 @@ const onRefresh = async () => {
               loadingText="加载中..."
               onRefresh={onRefresh}
               refreshing={refreshing}
-              style={{ height: '100%' }} // 确保组件有足够高度
+              style={{ minHeight: 'calc(100vh - 160px)', overflow: 'auto' }} // 设置最小高度确保下拉刷新可触发
             >
             <Waterfall
               books={displayedBooks}
               loading={loading}
               fetchMore={fetchMore}
               onBookClick={handleBookClick}
-              onEditMenuClick={openEditMenu}
+              onAddToBookshelf={handleAddToBookshelf}
+
+
               hasMore={hasMore}
             />
             {/* {loading && (
@@ -308,30 +278,7 @@ const onRefresh = async () => {
         </button>
       )}
 
-      {/* 动态编辑栏 */}
-        {editMenu.visible && (
-          <div 
-            className={styles.editBar} 
-            style={{ 
-              left: editMenu.x,
-              top: editMenu.y,
-            }} 
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className={styles.editButton} onClick={() => handleMenuAction('addToBookshelf')}>
-              {selectedBook?.isInBookshelf ? '移除书架' : '添加到书架'}
-            </div>
-            <div className={styles.editButton} onClick={() => handleMenuAction('markRead')}>
-              标记已读
-            </div>
-            <div className={styles.editButton} onClick={() => handleMenuAction('markUnread')}>
-              标记未读
-            </div>
-            <div className={styles.editButton} onClick={() => handleMenuAction('top')}>
-              {selectedBook?.isTop ? '取消置顶' : '置顶书籍'}
-            </div>
-          </div>
-        )}
+      
     </div>
   )}
 export default Stacks
