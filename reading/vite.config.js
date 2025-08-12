@@ -9,7 +9,8 @@ export default defineConfig({
     react(),
     viteMockServe({
       mockPath: "mock",
-      localEnabled: true,
+      // 在Vercel环境禁用mock
+      localEnabled: !process.env.VERCEL,
     }),
     tailwindcss(),
   ],
@@ -17,5 +18,8 @@ export default defineConfig({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
+  },
+  build: {
+    target: "es2022",
   },
 });

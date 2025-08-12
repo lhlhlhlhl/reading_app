@@ -7,7 +7,7 @@ import Waterfall from '@/components/Waterfall';
 import { ArrowUp } from '@react-vant/icons'; // 使用项目中已有的图标库
 import { Search } from '@react-vant/icons';
 import { PullRefresh } from 'react-vant';
-import {StacksSkeleton} from '@/components/Skeleton';
+
 
 
 const Stacks = () => {
@@ -202,10 +202,6 @@ const onRefresh = async () => {
 
   return (
     <div className={styles.stacks} onClick={closeEditMenu}>
-      {loading ? (
-      <StacksSkeleton />
-    ) : (
-      <>
       {/* 搜索栏 */}
       <div className={styles.searchBar} onClick={() => navigate('/search')}>
         <Search className={styles.searchIcon} size={18} />
@@ -330,7 +326,6 @@ const onRefresh = async () => {
             </div>
           </div>
         )}
-        </>)}
     </div>
   )}
 export default Stacks

@@ -1,25 +1,25 @@
 import Mock from 'mockjs';
 
-// 定义书籍数据结构
-const BookModel = {
-  id: '',
-  bookName: '',
-  cover: '',
-  author: '',
-  publishTime: '',
-  description: '',
-  category: '', // 主分类
-  subCategory: '', // 子分类
-  isInBookshelf: false,
-  isRead: false,
-  isTop: false,
-  isFinished: false, // 是否完本
-  rating: 0,
-  readProgress: 0,
-  readCount: 0, // 阅读人数
-  rank: 0, // 排名
-  collectionCount: 0 // 收藏数量
-};
+// // 定义书籍数据结构
+// const BookModel = {
+//   id: '',
+//   bookName: '',
+//   cover: '',
+//   author: '',
+//   publishTime: '',
+//   description: '',
+//   category: '', // 主分类
+//   subCategory: '', // 子分类
+//   isInBookshelf: false,
+//   isRead: false,
+//   isTop: false,
+//   isFinished: false, // 是否完本
+//   rating: 0,
+//   readProgress: 0,
+//   readCount: 0, // 阅读人数
+//   rank: 0, // 排名
+//   collectionCount: 0 // 收藏数量
+// };
 
 // 定义主分类和子分类
 const CATEGORIES = {
@@ -89,53 +89,8 @@ export default [
         data: mockBooks
       };
     }
-  },
+  }, 
   {
-    url: '/api/books/bookshelf',
-    method: 'get',
-    timeout: 1000,
-    response: () => {
-      const bookshelfBooks = mockBooks.filter(book => book.isInBookshelf);
-      return {
-        code: 0,
-        data: bookshelfBooks
-      };
-    }
-  },
-  {
-    url: '/api/books/:id',
-    method: 'get',
-    timeout: 1000,
-    response: (req) => {
-      const id = req.params.id;
-      const book = mockBooks.find(book => book.id === id);
-      return {
-        code: 0,
-        data: book || null
-      };
-    }
-  },
-  {
-    url: '/api/books/update',
-    method: 'post',
-    timeout: 1000,
-    response: (req) => {
-      const { id, updates } = req.body;
-      const index = mockBooks.findIndex(book => book.id === id);
-      if (index !== -1) {
-        mockBooks[index] = { ...mockBooks[index], ...updates };
-        return {
-          code: 0,
-          data: mockBooks[index],
-          message: '更新成功'
-        };
-      }
-      return {
-        code: -1,
-        message: '未找到书籍'
-      };
-    }
-  },{
     url: '/api/search',
     method: 'get',
     timeout: 1000,
@@ -189,43 +144,4 @@ export default [
         }
     }
 },
-{
-    url:"/api/detail/:id",
-    method:'get',
-    timeout:1000,
-    response:(req,res)=>{
-        const randomData = Mock.mock({
-            bookName:'@ctitle(5,10)',//书名
-            bookDesc:'@cparagraph(10,30)',//描述
-            images:
-                {
-                    url:'@image(300x200,@color,#fff,图片)',
-                    alt:'@ctitle(5,10)'
-                },//封面
-            credit:'@float(0,10,2)',//评分
-            keyword:'@cword(2, 3)',//关键词
-            author:'@cname()',//作者
-            publishTime:'@date()',//发布时间
-            readNum:'@integer(1000, 10000)',//在线阅读量
-            stacksNum:'@integer(100, 1000)',//加入书架量
-            rank:'@integer(1, 100)',//排名
-        })
-        return {
-            code:0,
-            data:randomData
-        }
-    }
-},
-{
-    //?page=1 queryString
-    url:'/api/images',
-    method:'get',
-    response:({query})=>{
-        const page = Number(query.page) || 1;
-        return {
-            code:0,
-            data:getImages(page)
-        }
-    }
-}
 ]
