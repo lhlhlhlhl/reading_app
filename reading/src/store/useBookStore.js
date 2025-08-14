@@ -13,10 +13,10 @@ const CATEGORIES = {
 };
 
 // 获取所有模拟书籍数据
-// const mockBooks = mockBooksData.default.find(api => api.url === '/api/books')?.response()?.data || [];
+//  const mockBooks = mockBooksData.default.find(api => api.url === '/api/books')?.response()?.data || [];
 const res = await mockBooksData();
-const mockBooks = res.data;
-console.log(mockBooks)
+const mockBooks = res.data.data;
+console.log(mockBooks,'/////')
 
 // 创建书籍存储
 const useBookStore = create(

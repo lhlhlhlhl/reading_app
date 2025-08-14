@@ -1,12 +1,17 @@
 import { ArrowLeft } from '@react-vant/icons'
 import {
     useState,
-    useEffect
+    useEffect,
+    useRef,
 } from "react"
 import {
     useNavigate, // Navigate 组件 js 跳转
     useLocation
 } from 'react-router-dom'
+import {
+    userStore
+}from '@/store/userStore'
+
 import  useTitle  from '@/hooks/useTitle'
 import styles from './login.module.css'
 import { LoginSkeleton } from '@/components/Skeleton'
@@ -15,9 +20,11 @@ const Login = () => {
     const location = useLocation();//获取当前的路径
     // console.log(location.state.from);
     const navigate = useNavigate(); // navigate 能力
-
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+    const usernameRef = useRef()
+    const passwordRef = useRef()
+    const {login} = userStore()
+    // const [username, setUsername] = useState('');
+    // const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(true);
 
     // 模拟加载完成
@@ -30,13 +37,16 @@ const Login = () => {
     }, []);
     const handleSubmit = (event) => {
         event.preventDefault();
-        // console.log(username, password);
-        if (username === 'a' && password === '1') {
-            localStorage.setItem('isLogin', 'true');
-            navigate(location?.state?.from || '/');
-        } else {
-            alert('用户名或密码错误');
+       const username = usernameRef.current.value
+        const password = passwordRef.current.value
+        if(!username||!password){
+            alert('请输入用户名或密码')
+            return;
         }
+        login({username,password})
+         setTimeout(()=>{
+            navigate('/')
+        },1000)
     }
     return (
         <div className={styles.loginContainer}>
@@ -61,20 +71,21 @@ const Login = () => {
                             <div className={styles.inputGroup}>
                                 <input 
                                     type="text" 
-                                    placeholder="用户名" 
-                                    required
-                                    value={username} 
-                                    onChange={(event) => setUsername(event.target.value)}
+                                    ref={usernameRef} 
+                                    //required 
+                                    placeholder='请输入用户名'
+                                    //onChange={(event) => setUsername(event.target.value)}
                                     className={styles.inputField}
                                 />
                             </div>
                             <div className={styles.inputGroup}>
                                 <input 
                                     type="password" 
-                                    placeholder="密码" 
-                                    required 
-                                    value={password}
-                                    onChange={(event) => setPassword(event.target.value)}
+                                    ref={passwordRef} 
+                                    //required 
+                                    placeholder='请输入密码'
+                                    //value={password}
+                                    //onChange={(event) => setPassword(event.target.value)}
                                     className={styles.inputField}
                                 />
                             </div>

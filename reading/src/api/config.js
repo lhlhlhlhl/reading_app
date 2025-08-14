@@ -19,13 +19,24 @@ export const envConfig = {
 };
 
 
+//拦截请求  interceptors 拦截器
 axios.interceptors.request.use((config)=>{
-    // token
+    // const token = localStorage.getItem('token')
+    // if(token){
+    //     config.headers.Authorization = token
+    // }
+    // console.log('/////')
+    const token = localStorage.getItem('token')||""
+    if(token){
+        config.headers.Authorization = `Bearer ${token}`
+    }
+    // config.headers.Authorization = token
     return config
 })
-// 响应拦截器
-axios.interceptors.response.use((data)=>{
-    return data.data
+//拦截响应,请求结束
+axios.interceptors.response.use((res)=>{
+    console.log('||||')
+    return res
 })
 
 

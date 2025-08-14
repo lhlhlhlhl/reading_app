@@ -13,6 +13,7 @@
     "@react-vant/icons": "0.1.0",
     "@tailwindcss/vite": "^4.1.11",
     "axios": "^1.11.0",
+    "jsonwebtoken": "^9.0.2",
     "lib-flexible": "^0.3.2",
     "lucide-react": "^0.537.0",
     "mockjs": "^1.1.0",
