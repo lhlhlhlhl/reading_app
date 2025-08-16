@@ -1343,9 +1343,6 @@ packages:
   natural-compare@1.4.0:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
 
-  node-base64@0.0.1:
-    resolution: {integrity: sha512-lzWZQXvK7O1g5aKPCTYQJFGJc3MToEMlGmhXN+2UtkRYQz0OiWHoSMkfqQedUYCwWnixvsauH/IFsaFkrspjYQ==}
-
   node-releases@2.0.19:
     resolution: {integrity: sha512-xxOWJsBKtzAq7DY0J+DTzuz58K8e7sJbdgwkbMWQe8UYB6ekmsQ45q0M/tJDsGaZmbC+l7n57UV8Hl5tHxO9uw==}
 
@@ -2667,9 +2664,7 @@ snapshots:
       jwa: 1.4.2
       safe-buffer: 5.2.1
 
-  jwt@0.2.0:
-    dependencies:
-      node-base64: 0.0.1
+  jwt@0.2.0: {}
 
   keyv@4.5.4:
     dependencies:
@@ -2803,8 +2798,6 @@ snapshots:
   nanoid@3.3.11: {}
 
   natural-compare@1.4.0: {}
-
-  node-base64@0.0.1: {}
 
   node-releases@2.0.19: {}
 

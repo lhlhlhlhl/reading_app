@@ -156,7 +156,6 @@ pnpm i vite-plugin-mock mockjs postcss-pxtorem -D
 - 封装通用chat函数，支持多种LLM模型
 - AI图像生成功能
   - 优化prompt设计
-  - 宠物特征提取
 - 工作流自动化处理
 
 ### 4. 性能优化
@@ -167,7 +166,7 @@ pnpm i vite-plugin-mock mockjs postcss-pxtorem -D
 
 ### 5. 用户体验优化
 - 搜索建议与防抖结合
-- 下拉刷新和无限滚动
+- 无限滚动加载
 - 图片加载状态提示
 - SPA单页应用体验
 
