@@ -17,14 +17,12 @@
     {
       "src": "/api/(.*)",
       "dest": "/api/$1.js"
-    },
+    }
+  ],
+  "rewrites": [
     {
-      "src": "/assets/(.*)",
-      "dest": "/assets/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
