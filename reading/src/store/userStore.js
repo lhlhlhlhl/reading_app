@@ -11,23 +11,27 @@ import {
 
 export const userStore = create((set) => ({
     user: null,//用户信息
-    isLogin:false,//是否登入
-    login:async({username="",password=""})=>{
-        const res = await doLogin({username,password})
-        console.log(res.data.message,'///////////////')
-        const {token,data:user} = res.data
+    isLogin: false,//是否登入
+    login: async ({ username = "", password = "" }) => {
+        const res = await doLogin({ username, password })
+        console.log(res.data.message, '///////////////')
+        const { token, data: user } = res.data
         console.log(token)
-        localStorage.setItem('token',token),
-        set({
-            isLogin:true,
-            user
-        })
+        localStorage.setItem('token', token),
+            localStorage.setItem('isLogin', true),
+
+            set({
+                isLogin: true,
+                user
+            })
     },
-    logout:()=>{
+    logout: () => {
         localStorage.removeItem('token')
+        localStorage.removeItem('isLogin')
+
         set({
-            isLogin:false,
-            user:null
+            isLogin: false,
+            user: null
         })
     },
     // setUser: (user) => set({ user }),

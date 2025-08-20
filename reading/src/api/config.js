@@ -8,8 +8,8 @@ const isProduction = window.location.hostname !== 'localhost';
 
 
 // 根据环境设置baseURL
-axios.defaults.baseURL = isProduction ? (isVercel ? '' : '/api') //Vercel 环境使用空路径，其他生产环境使用相对路径
-: `http://${window.location.hostname}:${window.location.port}/api`//开发环境支持所有本地端口
+// 在Vercel环境中，API请求应该发送到/api路径
+axios.defaults.baseURL = isProduction ? '/api' : `http://${window.location.hostname}:${window.location.port}/api`
 
 
 // 导出环境变量，供其他模块使用

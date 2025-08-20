@@ -27,6 +27,7 @@ const Home = () => {
   // 初始加载获取详情数据
   useEffect(() => {
     const fetchData = async () => {
+      await bookStore.initBooks();
       await bookStore.getBookshelfBooks();
       setLoading(false);
     };

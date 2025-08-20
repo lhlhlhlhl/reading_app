@@ -10,8 +10,12 @@ export default defineConfig({
     react(),
     viteMockServe({
       mockPath: "mock",
-      // 在Vercel环境禁用mock
-      localEnabled: !process.env.VERCEL,
+      // 在Vercel环境也启用mock
+      localEnabled: true,
+      // 生产环境也启用mock
+      prodEnabled: true,
+      // 这样可以支持更多场景
+      supportTs: false,
     }),
     tailwindcss(),
   ],
