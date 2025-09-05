@@ -22,13 +22,22 @@ const generateSuggestList = async(keyword) => {
 export const getSuggestList = async (keyword) => {
     if (isProduction) {
         // 在生产环境中使用模拟数据
+        const data = await generateSuggestList(keyword);
         return {
             code: 0,
-            data: generateSuggestList(keyword)
+            data: data
         };
     } else {
         // 在开发环境中使用API
-        return axios.get(`/search?keyword=${keyword}`);
+        try {
+            const res = await axios.get(`/search?keyword=${keyword}`);
+            // 确保返回与生产环境相同的数据结构
+            return res.data || { code: 0, data: [] };
+        } catch (error) {
+            console.error('搜索建议API调用失败:', error);
+            // 错误时返回默认空数组
+            return { code: 0, data: [] };
+        }
     }
 }
 

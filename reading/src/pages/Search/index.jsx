@@ -23,7 +23,7 @@ const Search = () => {
       <div className={styles.hot}>
         <h1>热门推荐</h1>
         {
-          hotList.data.map((item, index) => (
+          hotList.map((item, index) => (
             <div
               className={styles.item}
               key={`hot-${index}-${item?.id || index}`}
@@ -65,9 +65,11 @@ const Search = () => {
     )
   })
   useEffect(() => {
-    setHotList()
-    setSearchHistory(localStorage.getItem('searchHistory'))
-  }, [])
+    setHotList();
+    // 确保正确初始化搜索历史
+    const history = localStorage.getItem('searchHistory');
+    setSearchHistory(history ? JSON.parse(history) : []);
+  }, [setHotList, setSearchHistory]);
   //反复重新生成，使用useCallback
   const handleQuery = (query) => {
     //api请求交流
@@ -105,6 +107,7 @@ const Search = () => {
   const suggestListStyle = {
     display: query == '' ? 'none' : 'block', id: query
   }
+  console.log('suggestList', suggestList)
 
   return (
 
@@ -130,15 +133,29 @@ const Search = () => {
         ) : (
           /* 有搜索查询时显示建议列表 */
           <div className={styles.list}>
-            {suggestList.length > 0 ? (
-              suggestList.map((item, index) => (
+            {/* 增强的搜索建议渲染逻辑 */}
+            {/* 多层次安全检查确保数据正确性 */}
+            {suggestList && Array.isArray(suggestList) && suggestList.length > 0 ? (
+              // 再次确保这是一个有效的数组
+              [...suggestList].filter(item => item !== null && item !== undefined).map((item, index) => (
                 <div
-                  key={`suggest-${index}-${item?.title || index}`}
+                  key={`suggest-${index}-${typeof item === 'object' ? 
+                    (item?.title || 
+                     Object.values(item)[0] || 
+                     index) : 
+                    item || index}`}
                   className={styles.item}
                   onClick={() => navigate(`/detail/1`)}
-
                 >
-                  {item?.title || item}
+                  {/* 智能处理不同类型的数据显示 */}
+                  {typeof item === 'object' && item !== null ? (
+                    // 优先显示title，没有则尝试显示第一个可用值，否则显示字符串化结果
+                    item.title || 
+                    (Object.values(item).length > 0 ? Object.values(item)[0] : JSON.stringify(item))
+                  ) : (
+                    // 对于非对象类型，直接显示或转为字符串
+                    item || '未知项'
+                  )}
                 </div>
               ))
             ) : (

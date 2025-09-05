@@ -9,7 +9,7 @@ const Coze = () => {
   const [loading, setLoading] = useState(true);
   const [showLargeImage, setShowLargeImage] = useState(false);
   const workflowUrl = 'https://api.coze.cn/v1/workflow/run';
-  const workflow_id = '7534590579121143860'; // 替换为您的实际工作流ID
+  const workflow_id = '7534590579121143860';
   const patToken = import.meta.env.VITE_PAT_TOKEN;
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const Coze = () => {
   const [customStyle, setCustomStyle] = useState('');
   const [selectedStyle, setSelectedStyle] = useState('写实');
   const [enhancedScene, setEnhancedScene] = useState('');
-  
+
   // 经典书籍和默认场景
   const classicBooks = {
     '红楼梦': {
@@ -133,8 +133,8 @@ const Coze = () => {
       // 解析工作流返回数据
       let workflowData;
       try {
-        workflowData = typeof result.data === 'string' ? 
-                        JSON.parse(result.data) : result.data;
+        workflowData = typeof result.data === 'string' ?
+          JSON.parse(result.data) : result.data;
       } catch (e) {
         setStatus('解析工作流返回数据失败');
         console.error(e);
@@ -142,13 +142,13 @@ const Coze = () => {
       }
 
       // 提取图像URL和增强场景描述
-      const imageUrl = workflowData.data?.image_url || 
-                      workflowData.image_url || 
-                      workflowData.image;
-                      
-      const sceneDescription = workflowData.data?.enhanced_scene || 
-                              workflowData.enhanced_scene || 
-                              workflowData.scene_description;
+      const imageUrl = workflowData.data?.image_url ||
+        workflowData.image_url ||
+        workflowData.image;
+
+      const sceneDescription = workflowData.data?.enhanced_scene ||
+        workflowData.enhanced_scene ||
+        workflowData.scene_description;
       console.log(sceneDescription)
 
       if (imageUrl) {
@@ -167,159 +167,159 @@ const Coze = () => {
 
   return (
     <div className={styles.container}>
-     {loading ? (
-      <CozeSkeleton />
-    ) : (
-      <>
-      <div className={styles.title}>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <span className="title-text">✨</span>
-          <span className="title-text">Reading-创造</span>
-        </div>
-        <p className={styles.Text}>输入书名和人物，生成符合原著描述的图像场景</p>
-
-      </div>
-      
-      <div className={styles.inputSection}>
-        <div className={styles.inputGroup}>
-          <label className={styles.inputLabel}>书名</label>
-          <input
-            type="text"
-            value={bookTitle}
-            onChange={(e) => setBookTitle(e.target.value)}
-            placeholder="输入书名，如：红楼梦"
-            list="bookSuggestions"
-          />
-          <datalist id="bookSuggestions" >
-            {Object.keys(classicBooks).map(book => (
-              <option key={book} value={book} className={styles.bookSuggestions} />
-            ))}
-          </datalist>
-        </div>
-        
-        <div className={styles.inputGroup}>
-          <label className={styles.inputLabel}>人物</label>
-          <input
-            type="text"
-            value={character}
-            onChange={(e) => setCharacter(e.target.value)}
-            placeholder="输入人物名称"
-            list="characterSuggestions"
-          />
-          <datalist id="characterSuggestions" >
-            {bookTitle && classicBooks[bookTitle]?.characters.map(char => (
-              <option key={char} value={char} className={styles.bookSuggestions}/>
-            ))}
-          </datalist>
-        </div>
-        
-        <div className={styles.inputGroup}>
-          <label className={styles.inputLabel}>
-            场景 <span className={styles.optional}>(可选)</span>
-          </label>
-          <input
-            type="text"
-            value={scene}
-            onChange={(e) => setScene(e.target.value)}
-            placeholder="输入场景描述，如：葬花"
-            list="sceneSuggestions"
-          />
-          <datalist id="sceneSuggestions" >
-            {bookTitle && classicBooks[bookTitle]?.scenes.map(scene => (
-              <option key={scene} value={scene}className={styles.bookSuggestions} />
-            ))}
-          </datalist>
-        </div>
-        
-        <div className={styles.inputGroup}>
-          <label className={styles.inputLabel}>艺术风格</label>
-          <div className={styles.styleSelector}>
-            <div className={styles.styleOptions}>
-              {['写实', '水墨', '工笔画', '奇幻', '动漫', '油画', '自定义'].map((option) => (
-                <button
-                  key={option}
-                  className={`${styles.styleOption} ${selectedStyle === option ? styles.active : ''}`}
-                  onClick={() => handleStyleSelect(option)}
-                >
-                  {option === 'custom' ? '自定义' : option}
-                </button>
-              ))}
+      {loading ? (
+        <CozeSkeleton />
+      ) : (
+        <>
+          <div className={styles.title}>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <span className="title-text">✨</span>
+              <span className="title-text">Reading-创造</span>
             </div>
-            
-            {selectedStyle === '自定义' && (
-              <div className={styles.customStyleInput}>
-                <input
-                  id="customStyleInput"
-                  type="text"
-                  value={customStyle}
-                  onChange={(e) => setCustomStyle(e.target.value)}
-                  placeholder="输入自定义风格，如：赛博朋克"
-                />
-              </div>
-            )}
+            <p className={styles.Text}>输入书名和人物，生成符合原著描述的图像场景</p>
+
           </div>
-        </div>
-        
-        <div className={styles.generateButton}>
-          <button 
-            onClick={generateImage} 
-            disabled={status.includes('...')}
-          >
-            {status.includes('...') ? '生成中...' : '生成图像'}
-          </button>
-        </div>
-        
-        {status && <div className={styles.status}>{status}</div>}
-      </div>
-      
-      <div className={styles.outputSection}>
-        {imgUrl ? (
-          <>
-            <div className={styles.imageContainer}>
-              <img 
-                src={imgUrl} 
-                alt={`${bookTitle}中的${character}`} 
-                className={styles.generatedImage}
-                onClick={() => setShowLargeImage(true)}
+
+          <div className={styles.inputSection}>
+            <div className={styles.inputGroup}>
+              <label className={styles.inputLabel}>书名</label>
+              <input
+                type="text"
+                value={bookTitle}
+                onChange={(e) => setBookTitle(e.target.value)}
+                placeholder="输入书名，如：红楼梦"
+                list="bookSuggestions"
               />
+              <datalist id="bookSuggestions" >
+                {Object.keys(classicBooks).map(book => (
+                  <option key={book} value={book} className={styles.bookSuggestions} />
+                ))}
+              </datalist>
             </div>
 
-            {showLargeImage && (
-              <div className={styles.imageModal} onClick={() => setShowLargeImage(false)}>
-                <img 
-                  src={imgUrl} 
-                  alt={`${bookTitle}中的${character} - 放大`} 
-                  className={styles.largeImage}
-                />
-                <button className={styles.closeButton} onClick={() => setShowLargeImage(false)}>
-                  ×
-                </button>
-              </div>
-            )}
-            
-            {enhancedScene && (
-              <div className={styles.sceneDescription}>
-                <p>场景描述</p>
-                <p>{enhancedScene}</p>
-              </div>
-            )}
-          </>
-        ) : (
-          <div className={styles.placeholder}>
-            <div className={styles.placeholderIcon}>📚</div>
-            <p>输入书名和人物开始生成</p>
-            <div className={styles.example}>
-              <p>示例：</p>
-              <ul>
-                <li>《红楼梦》 - 林黛玉 - 葬花</li>
-                <li>《哈利波特》 - 哈利·波特 - 九又四分之三站台</li>
-                <li>《傲慢与偏见》 - 伊丽莎白 - 雨中求婚</li>
-              </ul>
+            <div className={styles.inputGroup}>
+              <label className={styles.inputLabel}>人物</label>
+              <input
+                type="text"
+                value={character}
+                onChange={(e) => setCharacter(e.target.value)}
+                placeholder="输入人物名称"
+                list="characterSuggestions"
+              />
+              <datalist id="characterSuggestions" >
+                {bookTitle && classicBooks[bookTitle]?.characters.map(char => (
+                  <option key={char} value={char} className={styles.bookSuggestions} />
+                ))}
+              </datalist>
             </div>
+
+            <div className={styles.inputGroup}>
+              <label className={styles.inputLabel}>
+                场景 <span className={styles.optional}>(可选)</span>
+              </label>
+              <input
+                type="text"
+                value={scene}
+                onChange={(e) => setScene(e.target.value)}
+                placeholder="输入场景描述，如：葬花"
+                list="sceneSuggestions"
+              />
+              <datalist id="sceneSuggestions" >
+                {bookTitle && classicBooks[bookTitle]?.scenes.map(scene => (
+                  <option key={scene} value={scene} className={styles.bookSuggestions} />
+                ))}
+              </datalist>
+            </div>
+
+            <div className={styles.inputGroup}>
+              <label className={styles.inputLabel}>艺术风格</label>
+              <div className={styles.styleSelector}>
+                <div className={styles.styleOptions}>
+                  {['写实', '水墨', '工笔画', '奇幻', '动漫', '油画', '自定义'].map((option) => (
+                    <button
+                      key={option}
+                      className={`${styles.styleOption} ${selectedStyle === option ? styles.active : ''}`}
+                      onClick={() => handleStyleSelect(option)}
+                    >
+                      {option === 'custom' ? '自定义' : option}
+                    </button>
+                  ))}
+                </div>
+
+                {selectedStyle === '自定义' && (
+                  <div className={styles.customStyleInput}>
+                    <input
+                      id="customStyleInput"
+                      type="text"
+                      value={customStyle}
+                      onChange={(e) => setCustomStyle(e.target.value)}
+                      placeholder="输入自定义风格，如：赛博朋克"
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className={styles.generateButton}>
+              <button
+                onClick={generateImage}
+                disabled={status.includes('...')}
+              >
+                {status.includes('...') ? '生成中...' : '生成图像'}
+              </button>
+            </div>
+
+            {status && <div className={styles.status}>{status}</div>}
           </div>
-        )}
-      </div>
-      </>)}
+
+          <div className={styles.outputSection}>
+            {imgUrl ? (
+              <>
+                <div className={styles.imageContainer}>
+                  <img
+                    src={imgUrl}
+                    alt={`${bookTitle}中的${character}`}
+                    className={styles.generatedImage}
+                    onClick={() => setShowLargeImage(true)}
+                  />
+                </div>
+
+                {showLargeImage && (
+                  <div className={styles.imageModal} onClick={() => setShowLargeImage(false)}>
+                    <img
+                      src={imgUrl}
+                      alt={`${bookTitle}中的${character} - 放大`}
+                      className={styles.largeImage}
+                    />
+                    <button className={styles.closeButton} onClick={() => setShowLargeImage(false)}>
+                      ×
+                    </button>
+                  </div>
+                )}
+
+                {enhancedScene && (
+                  <div className={styles.sceneDescription}>
+                    <p>场景描述</p>
+                    <p>{enhancedScene}</p>
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className={styles.placeholder}>
+                <div className={styles.placeholderIcon}>📚</div>
+                <p>输入书名和人物开始生成</p>
+                <div className={styles.example}>
+                  <p>示例：</p>
+                  <ul>
+                    <li>《红楼梦》 - 林黛玉 - 葬花</li>
+                    <li>《哈利波特》 - 哈利·波特 - 九又四分之三站台</li>
+                    <li>《傲慢与偏见》 - 伊丽莎白 - 雨中求婚</li>
+                  </ul>
+                </div>
+              </div>
+            )}
+          </div>
+        </>)}
 
     </div>
   );
